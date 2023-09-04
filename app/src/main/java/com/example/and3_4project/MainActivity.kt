@@ -1,4 +1,5 @@
 package com.example.and3_4project
+
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -18,12 +19,15 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.example.and3_4project.databinding.ActivityMainBinding
+import com.google.android.material.tabs.TabLayout
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityMainBinding
-
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var viewPager2: ViewPager2
+    private lateinit var adapter: FragmentPageAdapter
     private var userNameInput: String = ""
     private var userPhoneNumberInput: String = ""
     private var userEmailInput: String = ""
@@ -34,15 +38,54 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.fabAddContactDialogFragment.setOnClickListener {
+        val toolbar = binding.toolBar
+        setSupportActionBar(toolbar)
+
+        val viewPager2 = binding.viewPager
+        val tabLayout = binding.tabLayout
+
+        adapter = FragmentPageAdapter(supportFragmentManager, lifecycle)
+        viewPager2.adapter = adapter
+
+        //탭설정
+        tabLayout.addTab(tabLayout.newTab().setText("Contact"))
+        tabLayout.addTab(tabLayout.newTab().setText("Mypage"))
+
+
+        // TabLayout의 탭 선택 리스너 설정
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                if (tab != null) {
+                    viewPager2.currentItem = tab.position // 선택된 탭에 해당하는 페이지로 이동
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                // 사용하지 않음
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                // 사용하지 않음
+            }
+        })
+
+        // ViewPager2의 페이지 변경 콜백 설정
+        viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                tabLayout.selectTab(tabLayout.getTabAt(position)) // 페이지 변경 시 탭도 변경
+            }
+        })
+
+        binding.fabAdd.setOnClickListener {
             showAddContactDialog()
         }
 
-        val dataList = mutableListOf<ContactList>()
-        dataList.add(ContactList(R.drawable.ic_launcher_foreground, "이승훈", "01000000000"))
-        val adapter = Adapter(dataList)
-        binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+//        val dataList = mutableListOf<ContactList>()
+//        dataList.add(ContactList(R.drawable.ic_launcher_foreground, "이승훈", "01000000000"))
+//        val adapter = Adapter(dataList)
+//        binding.recyclerView.adapter = adapter
+//        binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
     }
 
@@ -70,11 +113,11 @@ class MainActivity : AppCompatActivity() {
         val dialog = builder.create()
         dialog.show()
 
-        addUserImg.setOnClickListener{
+        addUserImg.setOnClickListener {
 
         }
 
-        Save.setOnClickListener{
+        Save.setOnClickListener {
             userNameInput = userName.text.toString()
             userPhoneNumberInput = userPhoneNumber.text.toString()
 
@@ -88,33 +131,29 @@ class MainActivity : AppCompatActivity() {
             Log.d("useong", "userNameInput: $userPhoneNumberInput")
 //            Log.d("useong", "userNameInput: $userEventInput")
             Log.d("useong", "userNameInput: $userEmailInput")
-            if (userNameInput.isEmpty()){
+            if (userNameInput.isEmpty()) {
                 Toast.makeText(this, R.string.name_exception, Toast.LENGTH_SHORT).show()
-            }
-            else if (userPhoneNumberInput.isEmpty()){
+            } else if (userPhoneNumberInput.isEmpty()) {
                 Toast.makeText(this, R.string.phone_number_exception, Toast.LENGTH_SHORT).show()
-            }
-            else if (!isValidPhoneNumber(userPhoneNumberInput)){
-                Toast.makeText(this, R.string.phone_number_policy_exception, Toast.LENGTH_SHORT).show()
+            } else if (!isValidPhoneNumber(userPhoneNumberInput)) {
+                Toast.makeText(this, R.string.phone_number_policy_exception, Toast.LENGTH_SHORT)
+                    .show()
             }
 //            else if (userEventInput.isEmpty()){
 //                Toast.makeText(this, R.string.event_exception, Toast.LENGTH_SHORT).show()
 //            }
-            else if (EmailLeft.isEmpty()){
+            else if (EmailLeft.isEmpty()) {
                 Toast.makeText(this, R.string.email_exception, Toast.LENGTH_SHORT).show()
-            }
-            else if (EmailRight.isEmpty()){
+            } else if (EmailRight.isEmpty()) {
                 Toast.makeText(this, R.string.email_exception, Toast.LENGTH_SHORT).show()
-            }
-            else if (!isValidEmail(userEmailInput)){
+            } else if (!isValidEmail(userEmailInput)) {
                 Toast.makeText(this, R.string.email_policy_exception, Toast.LENGTH_SHORT).show()
-            }
-            else{
+            } else {
                 dialog.dismiss()
             }
         }
 
-        Cancel.setOnClickListener{
+        Cancel.setOnClickListener {
             dialog.dismiss()
         }
 
@@ -139,15 +178,18 @@ class MainActivity : AppCompatActivity() {
                     userPhoneNumber.addTextChangedListener(this)
                 }
             }
+
             override fun afterTextChanged(s: Editable?) {
             }
 
         })
     }
+
     private fun isValidPhoneNumber(phoneNumber: String): Boolean {
         val regex = Regex("^\\d{3}-\\d{4}-\\d{4}\$")
         return regex.matches(phoneNumber)
     }
+
     private fun isValidEmail(email: String): Boolean {
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
         return email.matches(emailPattern.toRegex())
