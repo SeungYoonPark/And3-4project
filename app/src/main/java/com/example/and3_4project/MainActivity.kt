@@ -1,12 +1,10 @@
 package com.example.and3_4project
 
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import com.example.and3_4project.databinding.MainActivityBinding
 
@@ -27,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     private fun showAddContactDialog() {
         val builder = AlertDialog.Builder(this)
         val inflater = LayoutInflater.from(this)
-        val dialogLayout = inflater.inflate(R.layout.fragment_add_contact_dialog_layout, null)
+        val dialogLayout = inflater.inflate(R.layout.fragment_add_contact_dialog, null)
         val addUserImg = dialogLayout.findViewById<ImageView>(R.id.addUserImg)
         addUserImg.setImageResource(R.drawable.user)
         addUserImg.setColorFilter(ContextCompat.getColor(this, R.color.white))
