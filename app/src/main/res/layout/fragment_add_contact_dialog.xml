@@ -47,51 +47,98 @@
         app:layout_constraintVertical_bias="0.05" />
 
     <EditText
-        android:id="@+id/addUserEmail"
-        android:layout_width="match_parent"
+        android:id="@+id/addUserEmailLeft"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Email"
-        android:layout_margin="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="15dp"
+        android:hint="로컬 아이디"
+        app:layout_constraintEnd_toStartOf="@+id/addUserEmailAt"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addUserEvant"
-        app:layout_constraintVertical_bias="0.05" />
+        app:layout_constraintTop_toBottomOf="@+id/addUserPhoneNumber" />
+
+    <TextView
+        android:id="@+id/addUserEmailAt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@"
+        app:layout_constraintBaseline_toBaselineOf="@+id/addUserEmailLeft"
+        app:layout_constraintEnd_toStartOf="@+id/addUserEmailRight"
+        app:layout_constraintStart_toEndOf="@+id/addUserEmailLeft" />
 
     <EditText
-        android:id="@+id/addUserEvant"
-        android:layout_width="match_parent"
+        android:id="@+id/addUserEmailRight"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Event"
-        android:layout_margin="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="15dp"
+        android:hint="도메인"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/addUserEmailAt"
+        app:layout_constraintTop_toBottomOf="@+id/addUserPhoneNumber" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/off"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/off"
+        android:layout_marginStart="15dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addUserPhoneNumber"
-        app:layout_constraintVertical_bias="0.05" />
+        app:layout_constraintTop_toBottomOf="@+id/addUserEmailLeft" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/fivePast"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/five_past"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/off"
+        app:layout_constraintTop_toBottomOf="@+id/addUserEmailRight" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/quarterPast"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/quarter_past"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/halfPast"
+        app:layout_constraintTop_toBottomOf="@+id/fivePast" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/halfPast"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/half_past"
+        android:layout_marginStart="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/off" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:text="CANCEL"
+        app:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addUserEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/halfPast" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="20dp"
         android:text="SAVE"
         app:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addUserEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/quarterPast" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
