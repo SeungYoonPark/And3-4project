@@ -101,11 +101,12 @@
 
     <androidx.appcompat.widget.AppCompatToggleButton
         android:id="@+id/off"
-        android:layout_width="0dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:textOn="@string/off"
-        android:textOff="@string/off"
         android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:textOff="@string/off"
+        android:textOn="@string/off"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addUserEmailLeft" />
 
@@ -113,9 +114,11 @@
         android:id="@+id/fivePast"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textOn="@string/five_past"
-        android:textOff="@string/five_past"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
+        android:textOff="@string/five_past"
+        android:textOn="@string/five_past"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/off"
         app:layout_constraintTop_toBottomOf="@+id/addUserEmailRight" />
@@ -124,9 +127,11 @@
         android:id="@+id/quarterPast"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textOn="@string/quarter_past"
-        android:textOff="@string/quarter_past"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="15dp"
+        android:textOff="@string/quarter_past"
+        android:textOn="@string/quarter_past"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/halfPast"
         app:layout_constraintTop_toBottomOf="@+id/fivePast" />
@@ -135,9 +140,10 @@
         android:id="@+id/halfPast"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:textOn="@string/half_past"
-        android:textOff="@string/half_past"
         android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:textOff="@string/half_past"
+        android:textOn="@string/half_past"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/off" />
 
@@ -146,6 +152,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
+        android:layout_marginTop="15dp"
         android:layout_marginBottom="20dp"
         android:text="CANCEL"
         app:backgroundTint="@color/white"
@@ -157,6 +164,7 @@
         android:id="@+id/save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="20dp"
         android:text="SAVE"
