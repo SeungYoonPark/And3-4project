@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
@@ -36,6 +37,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -154,17 +156,8 @@ class MainActivity : AppCompatActivity() {
 
         binding.fabAdd.setOnClickListener {
             showAddContactDialog()
-            // fabCheck = 0 이면 안 만들어지고, fabCheck = 1이면 만들어짐
-//            if(fabCheck == 1){
-//                val newContact = ContactList(
-//                    uri,
-//                    userNameInput,
-//                    R.drawable.heart,
-//                    userPhoneNumberInput,
-//                    "new@example.com",
-//                    "새로운 알림 메시지"
-//                )
-//            }
+             //fabCheck = 0 이면 안 만들어지고, fabCheck = 1이면 만들어짐
+
         }
 
     }
@@ -252,9 +245,6 @@ class MainActivity : AppCompatActivity() {
             val EmailRight = userEmailRight.text.toString()
             userEmailInput = "$EmailLeft@$EmailRight"
 
-            Log.d("useong", "userNameInput: $userNameInput")
-            Log.d("useong", "userNameInput: $userPhoneNumberInput")
-            Log.d("useong", "userNameInput: $userEmailInput")
 
             if (userNameInput.isEmpty()) {
                 Toast.makeText(this, R.string.name_exception, Toast.LENGTH_SHORT).show()
@@ -274,6 +264,27 @@ class MainActivity : AppCompatActivity() {
             } else {
                 fabCheck = 1
                 createScheduleNotification(this, selectTime, notificationId)
+
+                if(fabCheck == 1){
+
+                    val newContact = ContactList(
+                        uri,
+                        userNameInput,
+                        userPhoneNumberInput,
+                        userEmailInput,
+                        selectTime,
+                        false
+                    )
+
+//                    Log.d("recordUserImg", uri)
+//                    Log.d("userNameInput", userNameInput)
+//                    Log.d("R.drawable.heart", R.drawable.heart.toString())
+//                    Log.d("userPhoneNumberInput", userPhoneNumberInput)
+//                    Log.d("userEmailInput", userEmailInput)
+//                    Log.d("selectTime", selectTime)
+
+                    InfoSingleton.contactList.add(newContact)
+                }
                 dialog.dismiss()
             }
         }
@@ -390,8 +401,9 @@ class MainActivity : AppCompatActivity() {
 
             //화면에 보여주기
             Glide.with(this)
-                .load(uri)         //이미지 uri
-                .into(addUserImg) //보여줄 위치  ImageView
+                .load(Uri.parse(uri))         //이미지 uri
+                .fitCenter()
+                .into(addUserImg)             //보여줄 위치  ImageView
         }
     }
 

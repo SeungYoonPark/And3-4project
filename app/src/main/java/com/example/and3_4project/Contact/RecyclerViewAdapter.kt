@@ -1,5 +1,6 @@
 package com.example.and3_4project.Contact
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,8 +44,9 @@ class RecyclerViewAdapter(val mItems: MutableList<ContactList>)
         holder.itemView.setOnClickListener {  //클릭이벤트추가부분
             itemClick?.onClick(it, position)
         }
-        //아이콘 이미지뷰를 초기화하고 이름 text를 초기화한다.
-        holder.productImg.setImageResource(mItems[position].profileImg)
+
+        holder.productImg.setImageURI(Uri.parse(mItems[position].profileImg))
+
         holder.name.text = mItems[position].contactName
 
 

@@ -1,7 +1,7 @@
 package com.example.and3_4project.Contact
 
 data class ContactList(
-    var profileImg: Int,
+    var profileImg: String,
     val contactName: String,
     val phoneNumber:String,
     val email:String,
