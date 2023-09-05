@@ -1,10 +1,11 @@
-package com.example.and3_4project
+package com.example.and3_4project.Main
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.and3_4project.R
 
 class MyPageFragment : Fragment() {
     // 프래그먼트의 UI를 생성하고 반환하는 메서드

@@ -1,8 +1,9 @@
-package com.example.and3_4project
+package com.example.and3_4project.Main
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.and3_4project.Contact.ContactListFragment
 
 class FragmentPageAdapter(
     fragmentManager: FragmentManager,// Fragment를 관리하기 위한 FragmentManager 인스턴스
