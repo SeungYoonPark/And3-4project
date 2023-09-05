@@ -44,7 +44,9 @@ class RecyclerViewAdapter(val mItems: MutableList<ContactList>)
         holder.itemView.setOnClickListener {  //클릭이벤트추가부분
             itemClick?.onClick(it, position)
         }
+
         holder.productImg.setImageURI(Uri.parse(mItems[position].profileImg))
+
         holder.name.text = mItems[position].contactName
 
 
