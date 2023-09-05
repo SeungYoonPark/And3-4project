@@ -17,9 +17,10 @@
         app:layout_constraintVertical_bias="0.10">
     <ImageView
         android:id="@+id/addUserImg"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/user" />
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/user"
+        android:scaleType="centerCrop"/>
     </androidx.cardview.widget.CardView>
 
     <EditText
@@ -79,40 +80,44 @@
         app:layout_constraintStart_toEndOf="@+id/addUserEmailAt"
         app:layout_constraintTop_toBottomOf="@+id/addUserPhoneNumber" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatToggleButton
         android:id="@+id/off"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/off"
+        android:textOn="@string/off"
+        android:textOff="@string/off"
         android:layout_marginStart="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addUserEmailLeft" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatToggleButton
         android:id="@+id/fivePast"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/five_past"
+        android:textOn="@string/five_past"
+        android:textOff="@string/five_past"
         android:layout_marginEnd="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/off"
         app:layout_constraintTop_toBottomOf="@+id/addUserEmailRight" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatToggleButton
         android:id="@+id/quarterPast"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/quarter_past"
+        android:textOn="@string/quarter_past"
+        android:textOff="@string/quarter_past"
         android:layout_marginEnd="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/halfPast"
         app:layout_constraintTop_toBottomOf="@+id/fivePast" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatToggleButton
         android:id="@+id/halfPast"
-        android:layout_width="0dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="@string/half_past"
+        android:textOn="@string/half_past"
+        android:textOff="@string/half_past"
         android:layout_marginStart="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/off" />

@@ -9,5 +9,8 @@
         <item name="cornerSize">50%</item>
     </style>
 
+    <style name="dialog_shape" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/dialog_shape</item>
+    </style>
     <style name="Theme.And34Project" parent="Base.Theme.And34Project" />
 </resources>
