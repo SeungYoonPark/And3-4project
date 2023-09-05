@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/under"
+        android:title="설정"
+        android:icon="@android:drawable/ic_menu_set_as"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/notification"
+        android:title="뒤로가기"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_delete"
+        app:showAsAction="always" />
+
+
+</menu>
