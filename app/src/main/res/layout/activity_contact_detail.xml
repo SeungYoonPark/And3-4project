@@ -4,12 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Main.MyPageFragment"
-    android:background="@color/light_grey">
-
-
-
-    <!-- TODO: Update blank fragment layout -->
+    android:background="@color/light_grey"
+    tools:context=".Main.MyPageFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -34,14 +30,14 @@
                 android:layout_height="170dp"
                 android:layout_marginTop="45dp"
                 android:elevation="6dp"
+                app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="100dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:cardBackgroundColor="@color/white">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:id="@+id/imageView3"
+                    android:id="@+id/iv_profile"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="fitXY"
@@ -74,9 +70,9 @@
                 android:layout_marginTop="50dp"
                 android:layout_marginEnd="5dp"
                 android:background="@drawable/buttonshape"
-                android:text="전화"
                 android:drawableTop="@drawable/phone_button"
                 android:padding="10dp"
+                android:text="전화"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toStartOf="@+id/btn_notifycation"
                 app:layout_constraintStart_toEndOf="@+id/btn_massage"
@@ -89,9 +85,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/buttonshape"
-                android:text="알림"
                 android:drawableTop="@drawable/notification_button"
                 android:padding="10dp"
+                android:text="알림"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/btn_call" />
@@ -161,59 +157,6 @@
 
             </androidx.cardview.widget.CardView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cv_memo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="4dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cv_event">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/dark_grey">
-
-                    <TextView
-                        android:id="@+id/tv_memo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginTop="10dp"
-                        android:text="Memo"
-                        android:textSize="20dp"
-                        android:textColor="@color/white"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:textStyle="bold" />
-
-                    <EditText
-                        android:id="@+id/tv_content"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginEnd="15dp"
-                        android:layout_marginBottom="16dp"
-                        android:textColor="@color/white"
-                        android:text="이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!"
-                        android:background="@android:color/transparent"
-                        android:textSize="20dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_memo" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_event"
@@ -226,7 +169,7 @@
                 app:cardElevation="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cv_mobile">
+                app:layout_constraintTop_toBottomOf="@+id/cv_email">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -267,6 +210,111 @@
 
             </androidx.cardview.widget.CardView>
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_email"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cv_mobile">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/dark_grey">
+
+                    <TextView
+                        android:id="@+id/tv_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Email"
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_adress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="kyhi525@hanmail.net"
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_email" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_memo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cv_event">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/dark_grey">
+
+                    <TextView
+                        android:id="@+id/tv_memo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Memo"
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/tv_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginBottom="16dp"
+                        android:background="@android:color/transparent"
+                        android:text="이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!"
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_memo" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
             <ImageView
                 android:id="@+id/iv_heart"
                 android:layout_width="25dp"
@@ -280,8 +328,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
