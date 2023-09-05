@@ -178,8 +178,6 @@ class MainActivity : AppCompatActivity() {
         val userEmailLeft = dialogLayout.findViewById<EditText>(R.id.addUserEmailLeft)
         val userEmailRight = dialogLayout.findViewById<EditText>(R.id.addUserEmailRight)
 
-        addUserImg.setColorFilter(ContextCompat.getColor(this, R.color.white))
-        addUserImg.setImageResource(R.drawable.user)
 
 
         builder.setView(dialogLayout)
@@ -195,10 +193,7 @@ class MainActivity : AppCompatActivity() {
             requestLauncher.launch(intent)
         }
 
-
         addUserImg.setOnClickListener{
-            //다시 기본 필터로 변경
-            addUserImg.setColorFilter(null)
             //갤러리 호출
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"

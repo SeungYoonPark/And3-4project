@@ -33,11 +33,13 @@ class ContactListFragment : Fragment() {
 
     }
 
-    // 새로운 Contact 인스턴스 프레그 먼트를 생성하는 메서드
+
     fun newInstant(): ContactListFragment {
         val args = Bundle()
         val frag = ContactListFragment()
         frag.arguments = args
         return frag
     }
+
+
 }
