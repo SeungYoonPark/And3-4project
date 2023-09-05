@@ -1,6 +1,7 @@
 package com.example.and3_4project.Contact
 
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,8 +46,8 @@ class RecyclerViewAdapter(val mItems: MutableList<ContactList>)
             itemClick?.onClick(it, position)
         }
 
-        holder.productImg.setImageURI(Uri.parse(mItems[position].profileImg))
-
+        holder.productImg.setImageURI(mItems[position].profileImg)
+        Log.d("recordUserImg", mItems[position].profileImg.toString())
         holder.name.text = mItems[position].contactName
 
 

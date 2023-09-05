@@ -44,7 +44,7 @@ class ContactDetailActivity : AppCompatActivity() {
             tvAdress.text = email
             tvNumber.text = phoneNumber
             tvName.text = contactName
-            ivProfile.setImageURI(Uri.parse(profileImg))
+            ivProfile.setImageURI(profileImg)
             tvNotification.text = notification
             if (contact.isliked) {
                 ivHeart.setImageResource(R.drawable.heart_fill)
