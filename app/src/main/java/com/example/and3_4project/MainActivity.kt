@@ -139,12 +139,6 @@ class MainActivity : AppCompatActivity() {
             showAddContactDialog()
         }
 
-//        val dataList = mutableListOf<ContactList>()
-//        dataList.add(ContactList(R.drawable.ic_launcher_foreground, "이승훈", "01000000000"))
-//        val adapter = Adapter(dataList)
-//        binding.recyclerView.adapter = adapter
-//        binding.recyclerView.layoutManager = LinearLayoutManager(this)
-
     }
 
     private fun showAddContactDialog() {
