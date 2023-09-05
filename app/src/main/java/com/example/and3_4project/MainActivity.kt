@@ -195,6 +195,7 @@ class MainActivity : AppCompatActivity() {
             } else if (!isValidEmail(userEmailInput)) {
                 Toast.makeText(this, R.string.email_policy_exception, Toast.LENGTH_SHORT).show()
             } else {
+                createScheduleNotification(this, selectTime, notificationId)
                 dialog.dismiss()
             }
         }
@@ -270,9 +271,9 @@ class MainActivity : AppCompatActivity() {
         )
 
         val timeInMillis = when (selectTime) {
-            "5분 뒤 알림" -> System.currentTimeMillis() + 5 * 60 * 1000         // 5분
-            "15분 뒤 알림" -> System.currentTimeMillis() + 15 * 60 * 1000       // 15분
-            "30분 뒤 알림" -> System.currentTimeMillis() + 30 * 60 * 1000       // 30분
+            "5분 뒤 알림" -> System.currentTimeMillis() + 5 * 1000         // 5분 5 * 60 * 1000
+            "15분 뒤 알림" -> System.currentTimeMillis() + 15 * 1000       // 15분 15 * 60 * 1000
+            "30분 뒤 알림" -> System.currentTimeMillis() + 30 * 1000       // 30분 30 * 60 * 1000
             else -> System.currentTimeMillis()                                  // 즉시 알림
         }
 
