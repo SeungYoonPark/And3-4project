@@ -29,6 +29,7 @@ class ContactListFragment : Fragment() {
 
     }
 
+
     // 새로운 TodoFragment 인스턴스를 생성하는 메서드
     fun newInstant(): ContactListFragment {
         val args = Bundle()
@@ -36,4 +37,6 @@ class ContactListFragment : Fragment() {
         frag.arguments = args
         return frag
     }
+
+
 }
