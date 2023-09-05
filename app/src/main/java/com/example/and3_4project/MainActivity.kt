@@ -19,6 +19,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatToggleButton
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
@@ -107,10 +108,10 @@ class MainActivity : AppCompatActivity() {
         val Save = dialogLayout.findViewById<Button>(R.id.save)
         addUserImg = dialogLayout.findViewById<ImageView>(R.id.addUserImg)
 
-        val offBtn = dialogLayout.findViewById<Button>(R.id.off)
-        val fivePastBtn = dialogLayout.findViewById<Button>(R.id.fivePast)
-        val quarterPastBtn = dialogLayout.findViewById<Button>(R.id.quarterPast)
-        val halfPastBtn = dialogLayout.findViewById<Button>(R.id.halfPast)
+        val offBtn = dialogLayout.findViewById<AppCompatToggleButton>(R.id.off)
+        val fivePastBtn = dialogLayout.findViewById<AppCompatToggleButton>(R.id.fivePast)
+        val quarterPastBtn = dialogLayout.findViewById<AppCompatToggleButton>(R.id.quarterPast)
+        val halfPastBtn = dialogLayout.findViewById<AppCompatToggleButton>(R.id.halfPast)
 
         var userName = dialogLayout.findViewById<EditText>(R.id.addUserName)
         var userPhoneNumber = dialogLayout.findViewById<EditText>(R.id.addUserPhoneNumber)
@@ -137,18 +138,33 @@ class MainActivity : AppCompatActivity() {
         offBtn.setOnClickListener{
             selectTime = "OFF"
             notificationId = 1
+
+            fivePastBtn.isChecked = false
+            quarterPastBtn.isChecked = false
+            halfPastBtn.isChecked = false
         }
         fivePastBtn.setOnClickListener{
             selectTime = "5분 뒤 알림"
             notificationId = 2
+            offBtn.isChecked = false
+
+            quarterPastBtn.isChecked = false
+            halfPastBtn.isChecked = false
         }
         quarterPastBtn.setOnClickListener{
             selectTime = "15분 뒤 알림"
             notificationId = 3
+            offBtn.isChecked = false
+            fivePastBtn.isChecked = false
+
+            halfPastBtn.isChecked = false
         }
         halfPastBtn.setOnClickListener{
             selectTime = "30분 뒤 알림"
             notificationId = 4
+            offBtn.isChecked = false
+            fivePastBtn.isChecked = false
+            quarterPastBtn.isChecked = false
 
         }
 
