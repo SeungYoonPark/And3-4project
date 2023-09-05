@@ -1,4 +1,5 @@
 package com.example.and3_4project.Main
+import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -56,6 +57,18 @@ class MainActivity : AppCompatActivity() {
     lateinit var requestLauncher: ActivityResultLauncher<Intent>
     //버튼을 클릭시 생성할지 판단하는 변수
     private var fabCheck : Int = 0
+    private val getResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { reslut ->
+            if (reslut.resultCode == Activity.RESULT_OK) {
+                val data = reslut.data
+                val position = data?.getIntExtra("position", -1)
+                if (position != -1) {
+                    // 디테일 페이지에서 전달한 position을 사용하여 RecyclerView의 아이템을 업데이트
+                    position?.let { adapter.notifyItemChanged(it) }
+                }
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
