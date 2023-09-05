@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
@@ -28,7 +29,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
-import com.example.and3_4project.Contact.ContactList
 import com.example.and3_4project.R
 import com.example.and3_4project.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayout
@@ -36,6 +36,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -74,6 +75,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //툴바 설정
         val toolbar = binding.toolBar
         setSupportActionBar(toolbar)
 
@@ -84,11 +86,12 @@ class MainActivity : AppCompatActivity() {
         adapter = FragmentPageAdapter(supportFragmentManager, lifecycle)
         viewPager2.adapter = adapter
 
-        //탭설정
+        //탭레이아웃 설정
         tabLayout.addTab(tabLayout.newTab().setText("Contact"))
         tabLayout.addTab(tabLayout.newTab().setText("Mypage"))
-
-
+//        Tab 아이콘 설정
+        tabLayout.getTabAt(0)?.setIcon(R.drawable.profile)
+        tabLayout.getTabAt(1)?.setIcon(R.drawable.setting)
         // TabLayout의 탭 선택 리스너 설정
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
