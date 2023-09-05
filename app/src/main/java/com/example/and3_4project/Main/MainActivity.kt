@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
     private var selectTime: String = ""
     private var notificationId: Int = 0
-    private var uri: String = ""
+    private var uri: Uri? = null
     private lateinit var userName : EditText
     private lateinit var userPhoneNumber : EditText
 
@@ -276,12 +276,12 @@ class MainActivity : AppCompatActivity() {
                         false
                     )
 
-//                    Log.d("recordUserImg", uri)
-//                    Log.d("userNameInput", userNameInput)
-//                    Log.d("R.drawable.heart", R.drawable.heart.toString())
-//                    Log.d("userPhoneNumberInput", userPhoneNumberInput)
-//                    Log.d("userEmailInput", userEmailInput)
-//                    Log.d("selectTime", selectTime)
+                    Log.d("recordUserImg", uri.toString())
+                    Log.d("userNameInput", userNameInput)
+                    Log.d("R.drawable.heart", R.drawable.heart.toString())
+                    Log.d("userPhoneNumberInput", userPhoneNumberInput)
+                    Log.d("userEmailInput", userEmailInput)
+                    Log.d("selectTime", selectTime)
 
                     InfoSingleton.contactList.add(newContact)
                 }
@@ -389,7 +389,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
+    //R.drawable ->
     //사진 갖고오기
     private val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()){
@@ -397,11 +397,11 @@ class MainActivity : AppCompatActivity() {
         //결과 코드 OK , 결가값 null 아니면
         if(it.resultCode == RESULT_OK && it.data != null){
             //값 담기
-            uri  = it.data!!.data.toString()
+            uri  = it.data!!.data
 
             //화면에 보여주기
             Glide.with(this)
-                .load(Uri.parse(uri))         //이미지 uri
+                .load(uri)         //이미지 uri
                 .fitCenter()
                 .into(addUserImg)             //보여줄 위치  ImageView
         }
