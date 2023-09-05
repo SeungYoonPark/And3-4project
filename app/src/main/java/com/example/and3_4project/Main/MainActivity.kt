@@ -1,4 +1,4 @@
-package com.example.and3_4project
+package com.example.and3_4project.Main
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -27,6 +27,8 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.example.and3_4project.Contact.ContactList
+import com.example.and3_4project.R
 import com.example.and3_4project.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.Dispatchers
@@ -39,20 +41,21 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewPager2: ViewPager2
     private lateinit var adapter: FragmentPageAdapter
-
+    // 이 데이터들을 사용할 예정
     private var userNameInput: String = ""
     private var userPhoneNumberInput: String = ""
     private var userEmailInput: String = ""
     private lateinit var addUserImg : ImageView
 
+    private var selectTime: String = ""
+    private var notificationId: Int = 0
+    private var uri: String = ""
     private lateinit var userName : EditText
     private lateinit var userPhoneNumber : EditText
 
-    private var selectTime: String = ""
-    private var notificationId: Int = 0
-
     lateinit var requestLauncher: ActivityResultLauncher<Intent>
-
+    //버튼을 클릭시 생성할지 판단하는 변수
+    private var fabCheck : Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -64,6 +67,7 @@ class MainActivity : AppCompatActivity() {
         val viewPager2 = binding.viewPager
         val tabLayout = binding.tabLayout
 
+        //adapter 연결
         adapter = FragmentPageAdapter(supportFragmentManager, lifecycle)
         viewPager2.adapter = adapter
 
@@ -137,6 +141,17 @@ class MainActivity : AppCompatActivity() {
 
         binding.fabAdd.setOnClickListener {
             showAddContactDialog()
+            // fabCheck = 0 이면 안 만들어지고, fabCheck = 1이면 만들어짐
+//            if(fabCheck == 1){
+//                val newContact = ContactList(
+//                    uri,
+//                    userNameInput,
+//                    R.drawable.heart,
+//                    userPhoneNumberInput,
+//                    "new@example.com",
+//                    "새로운 알림 메시지"
+//                )
+//            }
         }
 
     }
@@ -147,7 +162,7 @@ class MainActivity : AppCompatActivity() {
         val dialogLayout = inflater.inflate(R.layout.fragment_add_contact_dialog, null)
         val Cancel = dialogLayout.findViewById<Button>(R.id.cancel)
         val Save = dialogLayout.findViewById<Button>(R.id.save)
-        addUserImg = dialogLayout.findViewById<ImageView>(R.id.addUserImg)
+        addUserImg = dialogLayout.findViewById(R.id.addUserImg)
 
         val offBtn = dialogLayout.findViewById<AppCompatToggleButton>(R.id.off)
         val fivePastBtn = dialogLayout.findViewById<AppCompatToggleButton>(R.id.fivePast)
@@ -171,7 +186,8 @@ class MainActivity : AppCompatActivity() {
         val dialog = builder.create()
         dialog.show()
 
-
+        //버튼을 클릭시 생성할지 판단하는 변수
+        fabCheck = 0
 
         //주소록 버튼 설정
         addUserContactBookBtn.setOnClickListener{
@@ -248,6 +264,7 @@ class MainActivity : AppCompatActivity() {
             } else if (!isValidEmail(userEmailInput)) {
                 Toast.makeText(this, R.string.email_policy_exception, Toast.LENGTH_SHORT).show()
             } else {
+                fabCheck = 1
                 createScheduleNotification(this, selectTime, notificationId)
                 dialog.dismiss()
             }
@@ -361,17 +378,16 @@ class MainActivity : AppCompatActivity() {
         //결과 코드 OK , 결가값 null 아니면
         if(it.resultCode == RESULT_OK && it.data != null){
             //값 담기
-            val uri  = it.data!!.data
+            uri  = it.data!!.data.toString()
 
             //화면에 보여주기
             Glide.with(this)
-                .load(uri) //이미지
-                .into(addUserImg) //보여줄 위치
+                .load(uri)         //이미지 uri
+                .into(addUserImg) //보여줄 위치  ImageView
         }
     }
 
     // 주소록에서 이름이랑 전화번호 갖고오기
-
     // 다이얼로그에서 퍼미션 허용했는지 확인
     override fun onRequestPermissionsResult(
         requestCode: Int,
