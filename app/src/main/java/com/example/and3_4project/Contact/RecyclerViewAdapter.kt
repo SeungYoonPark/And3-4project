@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.and3_4project.Main.InfoSingleton.contactList
+import com.example.and3_4project.R
 import com.example.and3_4project.databinding.ItemRecyclerviewBinding
 
 class RecyclerViewAdapter(val mItems: MutableList<ContactList>)
@@ -26,15 +28,30 @@ class RecyclerViewAdapter(val mItems: MutableList<ContactList>)
 
     //뷰를 생성해서 보여주는 것
     override fun onBindViewHolder(holder: Holder, position: Int) {
+        //좋아요 버튼 클릭시 반영
+        val contact=contactList[position]
+        if (contact.isliked){
+            holder.isliked.setImageResource(R.drawable.heart1)
+        }else{
+            holder.isliked.setImageResource(R.drawable.heart)
+        }
+        holder.isliked.setOnClickListener {
+            contact.isliked = !contact.isliked
+            // UI 업데이트 및 어댑터에 알림
+            notifyDataSetChanged()
+
+        }
         holder.itemView.setOnClickListener {  //클릭이벤트추가부분
             itemClick?.onClick(it, position)
         }
-        //아이콘 이미지뷰를 초기화하고 이름 text를 초기화한다.
-        holder.iconImageView.setImageURI(Uri.parse(mItems[position].profileImg))
+        holder.productImg.setImageURI(Uri.parse(mItems[position].profileImg))
         holder.name.text = mItems[position].contactName
 
-    }
 
+    }
+    fun getItem(position: Int): ContactList {
+        return contactList[position]
+    }
     override fun getItemId(position: Int): Long {
         return position.toLong()
     }
@@ -45,8 +62,8 @@ class RecyclerViewAdapter(val mItems: MutableList<ContactList>)
 
     //각 아이템에 관한 기본 설정
     inner class Holder(val binding: ItemRecyclerviewBinding) : RecyclerView.ViewHolder(binding.root) {
-        val iconImageView = binding.contactListIcon
+        val productImg = binding.contactListIcon
         val name = binding.contactListName
-        val heart = binding.contactListHeart
+        val isliked = binding.contactListHeart
     }
 }

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.and3_4project.Main.InfoSingleton
 import com.example.and3_4project.databinding.FragmentContactListBinding
 
 
@@ -22,15 +23,21 @@ class ContactListFragment : Fragment() {
 
         binding = FragmentContactListBinding.inflate(inflater, container, false)
 
-        val dataList = mutableListOf<ContactList>()
-
-        val adapter = RecyclerViewAdapter(dataList)
-
+        //싱글톤 연결하기
+        val contactList=InfoSingleton.getcontactList()
+        val adapter = RecyclerViewAdapter(contactList)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
 
-        return binding.root
 
+
+        adapter.itemClick = object : RecyclerViewAdapter.ItemClick {
+            override fun onClick(view: View, position: Int) {
+                startActivity(ContactDetailActivity.newIntentForDetail(context,position))
+            }
+        }
+
+        return binding.root
     }
 
 
