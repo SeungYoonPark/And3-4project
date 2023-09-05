@@ -4,8 +4,10 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
@@ -20,6 +22,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatToggleButton
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
@@ -40,10 +43,16 @@ class MainActivity : AppCompatActivity() {
     private var userNameInput: String = ""
     private var userPhoneNumberInput: String = ""
     private var userEmailInput: String = ""
-
     private lateinit var addUserImg : ImageView
+
+    private lateinit var userName : EditText
+    private lateinit var userPhoneNumber : EditText
+
     private var selectTime: String = ""
     private var notificationId: Int = 0
+
+    lateinit var requestLauncher: ActivityResultLauncher<Intent>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -88,6 +97,44 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+
+
+        //초기화 코드라 onCreate에 설정해야 한다
+        // 사용자가 퍼미션 허용했는지 확인
+        val status = ContextCompat.checkSelfPermission(this, "android.permission.READ_CONTACTS")
+        if (status == PackageManager.PERMISSION_GRANTED) {
+            Log.d("test", "permission granted")
+        } else {
+            // 퍼미션 요청 다이얼로그 표시
+            ActivityCompat.requestPermissions(this, arrayOf<String>("android.permission.READ_CONTACTS"), 100)
+            Log.d("test", "permission denied")
+        }
+
+        // ActivityResultLauncher 초기화, 결과 콜백 정의
+        requestLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                val cursor = contentResolver.query(
+                    it.data!!.data!!,
+                    arrayOf<String>(
+                        ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                        ContactsContract.CommonDataKinds.Phone.NUMBER,
+                    ),
+                    null,
+                    null,
+                    null
+                )
+                Log.d("test", "cursor size : ${cursor?.count}")
+
+                if (cursor!!.moveToFirst()) {
+                    val name = cursor.getString(0)
+                    val phone = cursor.getString(1)
+                    //수정하기
+                    userName.setText(name)
+                    userPhoneNumber.setText(phone)
+                }
+            }
+        }
+
         binding.fabAdd.setOnClickListener {
             showAddContactDialog()
         }
@@ -112,9 +159,11 @@ class MainActivity : AppCompatActivity() {
         val fivePastBtn = dialogLayout.findViewById<AppCompatToggleButton>(R.id.fivePast)
         val quarterPastBtn = dialogLayout.findViewById<AppCompatToggleButton>(R.id.quarterPast)
         val halfPastBtn = dialogLayout.findViewById<AppCompatToggleButton>(R.id.halfPast)
+        //주소록 버튼 설정
+        val addUserContactBookBtn = dialogLayout.findViewById<ImageView>(R.id.addUserContactBook)
 
-        var userName = dialogLayout.findViewById<EditText>(R.id.addUserName)
-        var userPhoneNumber = dialogLayout.findViewById<EditText>(R.id.addUserPhoneNumber)
+        userName = dialogLayout.findViewById<EditText>(R.id.addUserName)
+        userPhoneNumber = dialogLayout.findViewById<EditText>(R.id.addUserPhoneNumber)
         userPhoneNumber.filters = arrayOf(InputFilter.LengthFilter(13))
 
         val userEmailLeft = dialogLayout.findViewById<EditText>(R.id.addUserEmailLeft)
@@ -123,9 +172,19 @@ class MainActivity : AppCompatActivity() {
         addUserImg.setColorFilter(ContextCompat.getColor(this, R.color.white))
         addUserImg.setImageResource(R.drawable.user)
 
+
         builder.setView(dialogLayout)
         val dialog = builder.create()
         dialog.show()
+
+
+
+        //주소록 버튼 설정
+        addUserContactBookBtn.setOnClickListener{
+            val intent = Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI)
+            requestLauncher.launch(intent)
+        }
+
 
         addUserImg.setOnClickListener{
             //다시 기본 필터로 변경
@@ -177,8 +236,8 @@ class MainActivity : AppCompatActivity() {
 
             Log.d("useong", "userNameInput: $userNameInput")
             Log.d("useong", "userNameInput: $userPhoneNumberInput")
-
             Log.d("useong", "userNameInput: $userEmailInput")
+
             if (userNameInput.isEmpty()) {
                 Toast.makeText(this, R.string.name_exception, Toast.LENGTH_SHORT).show()
             } else if (userPhoneNumberInput.isEmpty()) {
@@ -201,6 +260,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         Cancel.setOnClickListener {
+            userName.text.clear()
+            userPhoneNumber.text.clear()
+            userEmailLeft.text.clear()
+            userEmailRight.text.clear()
             dialog.dismiss()
         }
 
@@ -310,6 +373,22 @@ class MainActivity : AppCompatActivity() {
             Glide.with(this)
                 .load(uri) //이미지
                 .into(addUserImg) //보여줄 위치
+        }
+    }
+
+    // 주소록에서 이름이랑 전화번호 갖고오기
+
+    // 다이얼로그에서 퍼미션 허용했는지 확인
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Log.d("test", "permission granted")
+        } else {
+            Log.d("test", "permission denied")
         }
     }
 }
