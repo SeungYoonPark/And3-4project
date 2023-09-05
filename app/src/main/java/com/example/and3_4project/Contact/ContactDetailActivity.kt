@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.icu.text.Transliterator.Position
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -55,7 +56,7 @@ class ContactDetailActivity : AppCompatActivity() {
             tvAdress.text = email
             tvNumber.text = phoneNumber
             tvName.text = contactName
-            ivProfile.setImageResource(profileImg)
+            ivProfile.setImageURI(profileImg)
             tvNotification.text = notification
             if (contact.isliked) {
                 ivHeart.setImageResource(R.drawable.heart_fill)

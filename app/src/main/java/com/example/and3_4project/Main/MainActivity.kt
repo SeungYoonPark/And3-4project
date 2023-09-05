@@ -6,7 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.PorterDuff
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
@@ -29,6 +29,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.example.and3_4project.Contact.ContactList
 import com.example.and3_4project.R
 import com.example.and3_4project.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayout
@@ -51,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
     private var selectTime: String = ""
     private var notificationId: Int = 0
-    private var uri: String = ""
+    private var uri: Uri? = null
     private lateinit var userName : EditText
     private lateinit var userPhoneNumber : EditText
 
@@ -157,17 +158,8 @@ class MainActivity : AppCompatActivity() {
 
         binding.fabAdd.setOnClickListener {
             showAddContactDialog()
-            // fabCheck = 0 이면 안 만들어지고, fabCheck = 1이면 만들어짐
-//            if(fabCheck == 1){
-//                val newContact = ContactList(
-//                    uri,
-//                    userNameInput,
-//                    R.drawable.heart,
-//                    userPhoneNumberInput,
-//                    "new@example.com",
-//                    "새로운 알림 메시지"
-//                )
-//            }
+             //fabCheck = 0 이면 안 만들어지고, fabCheck = 1이면 만들어짐
+
         }
 
     }
@@ -255,9 +247,6 @@ class MainActivity : AppCompatActivity() {
             val EmailRight = userEmailRight.text.toString()
             userEmailInput = "$EmailLeft@$EmailRight"
 
-            Log.d("useong", "userNameInput: $userNameInput")
-            Log.d("useong", "userNameInput: $userPhoneNumberInput")
-            Log.d("useong", "userNameInput: $userEmailInput")
 
             if (userNameInput.isEmpty()) {
                 Toast.makeText(this, R.string.name_exception, Toast.LENGTH_SHORT).show()
@@ -277,6 +266,27 @@ class MainActivity : AppCompatActivity() {
             } else {
                 fabCheck = 1
                 createScheduleNotification(this, selectTime, notificationId)
+
+                if(fabCheck == 1){
+
+                    val newContact = ContactList(
+                        uri,
+                        userNameInput,
+                        userPhoneNumberInput,
+                        userEmailInput,
+                        selectTime,
+                        false
+                    )
+
+                    Log.d("recordUserImg", uri.toString())
+                    Log.d("userNameInput", userNameInput)
+                    Log.d("R.drawable.heart", R.drawable.heart.toString())
+                    Log.d("userPhoneNumberInput", userPhoneNumberInput)
+                    Log.d("userEmailInput", userEmailInput)
+                    Log.d("selectTime", selectTime)
+
+                    InfoSingleton.contactList.add(newContact)
+                }
                 dialog.dismiss()
             }
         }
@@ -381,7 +391,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
+    //R.drawable ->
     //사진 갖고오기
     private val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()){
@@ -389,12 +399,13 @@ class MainActivity : AppCompatActivity() {
         //결과 코드 OK , 결가값 null 아니면
         if(it.resultCode == RESULT_OK && it.data != null){
             //값 담기
-            uri  = it.data!!.data.toString()
+            uri  = it.data!!.data
 
             //화면에 보여주기
             Glide.with(this)
                 .load(uri)         //이미지 uri
-                .into(addUserImg) //보여줄 위치  ImageView
+                .fitCenter()
+                .into(addUserImg)             //보여줄 위치  ImageView
         }
     }
 
