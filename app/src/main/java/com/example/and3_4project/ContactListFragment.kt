@@ -20,10 +20,7 @@ class ContactListFragment : Fragment() {
         binding = FragmentContactListBinding.inflate(inflater, container, false)
         val dataList = mutableListOf<ContactList>()
 
-        dataList.add(ContactList(R.drawable.icon_add_person,"이름1"))
-        dataList.add(ContactList(R.drawable.icon_add_person,"이름2"))
-        dataList.add(ContactList(R.drawable.icon_add_person,"이름3"))
-        dataList.add(ContactList(R.drawable.icon_add_person,"이름4",))
+
 
         val adapter = RecyclerViewAdapter(dataList)
         binding.recyclerView.adapter = adapter
@@ -31,8 +28,6 @@ class ContactListFragment : Fragment() {
         return binding.root
 
     }
-
-
 
     // 새로운 TodoFragment 인스턴스를 생성하는 메서드
     fun newInstant(): ContactListFragment {
