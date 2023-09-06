@@ -51,7 +51,6 @@ class ContactDetailActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar2)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        binding.toolbar2.title = "상세화면"
         val customBackIcon = ResourcesCompat.getDrawable(resources, R.drawable.icon_back_2, null)
         supportActionBar?.setHomeAsUpIndicator(customBackIcon)
 

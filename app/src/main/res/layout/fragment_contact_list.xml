@@ -18,7 +18,6 @@
         app:menu="@menu/contact_toolbar"
         android:background="@color/black"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title="@string/app_name"
         app:titleTextColor="@color/white" />
 
     <androidx.recyclerview.widget.RecyclerView
