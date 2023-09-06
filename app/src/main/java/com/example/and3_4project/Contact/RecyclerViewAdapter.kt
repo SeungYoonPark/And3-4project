@@ -12,6 +12,13 @@ import com.example.and3_4project.databinding.ItemRecyclerviewBinding
 
 class RecyclerViewAdapter(val mItems: MutableList<ContactList>)
     : RecyclerView.Adapter<RecyclerViewAdapter.Holder>() {
+    var myPosition = 0
+    fun getPosition():Int{
+        return myPosition
+    }
+    private fun setPostion(position: Int){
+        myPosition = position
+    }
 
     //아이템 클릭시 반응    -> 디테일 페이지로 넘어가기?
     interface ItemClick {
