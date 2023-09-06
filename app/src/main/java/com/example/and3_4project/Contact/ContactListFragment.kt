@@ -1,17 +1,12 @@
 package com.example.and3_4project.Contact
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.core.view.marginBottom
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.and3_4project.Main.InfoSingleton
@@ -35,6 +30,7 @@ class ContactListFragment : Fragment() {
     private var contactList = InfoSingleton.getcontactList()
 
     private val adapter = RecyclerViewAdapter(contactList)
+    private val gridAdapter = GridRecyclerViewAdapter(contactList)
 
     fun newInstant(): ContactListFragment {
         val args = Bundle()
@@ -55,6 +51,7 @@ class ContactListFragment : Fragment() {
         setHasOptionsMenu(true)
         
         binding.recyclerView.adapter = adapter
+
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
 
         adapter.itemClick = object : RecyclerViewAdapter.ItemClick {
@@ -65,19 +62,21 @@ class ContactListFragment : Fragment() {
 
 
         binding.toolbar.setOnMenuItemClickListener {
+
             when (it.itemId) {
                 R.id.grid_menu -> {
-
                     if (viewType){
                     it.setIcon(R.drawable.icon_menu_line)
-                        binding.recyclerView.layoutManager = GridLayoutManager(activity,2)}
-
-
+                        binding.recyclerView.adapter = gridAdapter
+                        gridAdapter.itemClick = object : GridRecyclerViewAdapter.ItemClick {
+                            override fun onClick(view: View, position: Int) {
+                                startActivity(ContactDetailActivity.newIntentForDetail(context, position))
+                            }
+                        }
+                        binding.recyclerView.layoutManager = GridLayoutManager(activity,2) }
                     else {it.setIcon(R.drawable.icon_menu)
+                        binding.recyclerView.adapter= adapter
                         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
-
-
-
                     }
                     viewType = !viewType
                     true
@@ -88,9 +87,8 @@ class ContactListFragment : Fragment() {
             true
         }
         return binding.root
-
-
     }
+
 
 
 
@@ -107,6 +105,5 @@ class ContactListFragment : Fragment() {
         Log.d("recordUser", newContact.isliked.toString())
     }
 }
-
 
 
