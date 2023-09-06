@@ -76,9 +76,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //툴바 설정
-        val toolbar = binding.toolBar
-        setSupportActionBar(toolbar)
 
         val viewPager2 = binding.viewPager
         val tabLayout = binding.tabLayout
