@@ -24,5 +24,7 @@ class MyPageFragment : Fragment() {
         val frag = MyPageFragment()
         frag.arguments = args
         return frag
+
+
     }
 }
