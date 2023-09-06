@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.and3_4project.Main.InfoSingleton
 import com.example.and3_4project.R
@@ -47,13 +48,21 @@ class ContactListFragment : Fragment() {
             }
         }
 
+
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.grid_menu -> {
+
                     if (viewType){
-                    it.setIcon(R.drawable.list)}
-                    else{
-                        it.setIcon(R.drawable.grid)
+                    it.setIcon(R.drawable.icon_menu_line)
+                        binding.recyclerView.layoutManager = GridLayoutManager(activity,2)}
+
+
+                    else {it.setIcon(R.drawable.icon_menu)
+                        binding.recyclerView.layoutManager = LinearLayoutManager(activity)
+
+
+
                     }
                     viewType = !viewType
                     true
