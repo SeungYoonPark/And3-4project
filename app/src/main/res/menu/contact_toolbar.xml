@@ -11,5 +11,4 @@
         android:icon="@drawable/icon_menu"
         app:showAsAction="always" />
 
-
 </menu>
