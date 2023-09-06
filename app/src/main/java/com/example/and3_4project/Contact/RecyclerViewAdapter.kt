@@ -32,7 +32,7 @@ class RecyclerViewAdapter(val mItems: MutableList<ContactList>)
         //좋아요 버튼 클릭시 반영
         val contact=contactList[position]
         if (contact.isliked){
-            holder.isliked.setImageResource(R.drawable.heart1)
+            holder.isliked.setImageResource(R.drawable.heart_fill)
         }else{
             holder.isliked.setImageResource(R.drawable.heart)
         }
@@ -47,7 +47,7 @@ class RecyclerViewAdapter(val mItems: MutableList<ContactList>)
         }
 
         holder.productImg.setImageURI(mItems[position].profileImg)
-        Log.d("recordUserImg", mItems[position].profileImg.toString())
+
         holder.name.text = mItems[position].contactName
 
 

@@ -76,6 +76,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //툴바 설정
         val toolbar = binding.toolBar
         setSupportActionBar(toolbar)
 
@@ -86,11 +87,12 @@ class MainActivity : AppCompatActivity() {
         adapter = FragmentPageAdapter(supportFragmentManager, lifecycle)
         viewPager2.adapter = adapter
 
-        //탭설정
+        //탭레이아웃 설정
         tabLayout.addTab(tabLayout.newTab().setText("Contact"))
         tabLayout.addTab(tabLayout.newTab().setText("Mypage"))
-
-
+//        Tab 아이콘 설정
+        tabLayout.getTabAt(0)?.setIcon(R.drawable.profile)
+        tabLayout.getTabAt(1)?.setIcon(R.drawable.setting)
         // TabLayout의 탭 선택 리스너 설정
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
