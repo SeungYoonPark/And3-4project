@@ -8,7 +8,7 @@
         android:id="@+id/grid_menu"
         android:title="메뉴"
         android:enabled="true"
-        android:icon="@drawable/grid"
+        android:icon="@drawable/icon_menu"
         app:showAsAction="always" />
 
 
