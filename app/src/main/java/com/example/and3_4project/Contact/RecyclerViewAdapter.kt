@@ -10,10 +10,10 @@ import com.example.and3_4project.Main.InfoSingleton.contactList
 import com.example.and3_4project.R
 import com.example.and3_4project.databinding.ItemRecyclerviewBinding
 
-class RecyclerViewAdapter(val mItems: MutableList<ContactList>)
+class RecyclerViewAdapter(private val mItems: MutableList<ContactList>)
     : RecyclerView.Adapter<RecyclerViewAdapter.Holder>() {
 
-    //아이템 클릭시 반응    -> 디테일 페이지로 넘어가기?
+
     interface ItemClick {
         fun onClick(view : View, position : Int){
 
@@ -27,7 +27,6 @@ class RecyclerViewAdapter(val mItems: MutableList<ContactList>)
         return Holder(binding)
     }
 
-    //뷰를 생성해서 보여주는 것
     override fun onBindViewHolder(holder: Holder, position: Int) {
         //좋아요 버튼 클릭시 반영
         val contact=contactList[position]
@@ -47,7 +46,6 @@ class RecyclerViewAdapter(val mItems: MutableList<ContactList>)
         }
 
         holder.productImg.setImageURI(mItems[position].profileImg)
-
         holder.name.text = mItems[position].contactName
 
 
