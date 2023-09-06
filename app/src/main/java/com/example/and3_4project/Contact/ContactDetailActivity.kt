@@ -59,9 +59,9 @@ class ContactDetailActivity : AppCompatActivity() {
             ivProfile.setImageURI(profileImg)
             tvNotification.text = notification
             if (contact.isliked) {
-                ivHeart.setImageResource(R.drawable.heart_fill)
+                ivHeart.setImageResource(R.drawable.icon_bookmark_fill)
             } else {
-                ivHeart.setImageResource(R.drawable.heart)
+                ivHeart.setImageResource(R.drawable.icon_bookmark)
             }
 
         }
@@ -73,9 +73,9 @@ class ContactDetailActivity : AppCompatActivity() {
             //버튼 클릭시 이미지 변경되도록 구현
             if (contact.isliked) {
                 Toast.makeText(this, "관심목록에 추가되었습니다.", Toast.LENGTH_SHORT).show()
-                binding.ivHeart.setImageResource(R.drawable.heart_fill)
+                binding.ivHeart.setImageResource(R.drawable.icon_bookmark_fill)
             } else {
-                binding.ivHeart.setImageResource(R.drawable.heart)
+                binding.ivHeart.setImageResource(R.drawable.icon_bookmark)
             }
             //좋아요 상태를 메인으로 연결하기
             val intent = Intent()
