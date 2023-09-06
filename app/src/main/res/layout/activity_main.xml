@@ -6,16 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".Main.MainActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tool_bar"
-        android:background="@color/black"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:layout_constraintTop_toTopOf="parent" />
-
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"
@@ -25,7 +15,7 @@
         app:layout_constraintBottom_toTopOf="@+id/tab_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
