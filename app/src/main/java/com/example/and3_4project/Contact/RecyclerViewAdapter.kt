@@ -47,7 +47,7 @@ class RecyclerViewAdapter(val mItems: MutableList<ContactList>)
         }
 
         holder.productImg.setImageURI(mItems[position].profileImg)
-        Log.d("recordUserImg", mItems[position].profileImg.toString())
+
         holder.name.text = mItems[position].contactName
 
 
