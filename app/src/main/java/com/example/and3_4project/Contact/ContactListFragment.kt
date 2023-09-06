@@ -1,7 +1,10 @@
 package com.example.and3_4project.Contact
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -28,6 +31,18 @@ class ContactListFragment : Fragment() {
     }
 
 
+    //싱글톤 연결하기
+    private var contactList = InfoSingleton.getcontactList()
+
+    private val adapter = RecyclerViewAdapter(contactList)
+
+    fun newInstant(): ContactListFragment {
+        val args = Bundle()
+        val frag = ContactListFragment()
+        frag.arguments = args
+        return frag
+    }
+
     // 처음에 그려질때 호출되는 콜백 메서드
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,12 +51,12 @@ class ContactListFragment : Fragment() {
     ): View? {
 
         binding = FragmentContactListBinding.inflate(inflater, container, false)
+
         setHasOptionsMenu(true)
-        //싱글톤 연결하기
-        val contactList = InfoSingleton.getcontactList()
-        val adapter = RecyclerViewAdapter(contactList)
+        
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
+
         adapter.itemClick = object : RecyclerViewAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
                 startActivity(ContactDetailActivity.newIntentForDetail(context, position))
@@ -78,12 +93,20 @@ class ContactListFragment : Fragment() {
     }
 
 
-    fun newInstant(): ContactListFragment {
-        val args = Bundle()
-        val frag = ContactListFragment()
-        frag.arguments = args
-        return frag
+
+    fun addContacntListSetting(newContact: ContactList){
+        InfoSingleton.contactList.add(newContact)
+        contactList = InfoSingleton.getcontactList()
+        adapter.notifyDataSetChanged()//addItems(contactList)
+
+        Log.d("recordUser", newContact.profileImg.toString())
+        Log.d("recordUser", newContact.contactName)
+        Log.d("recordUser", newContact.phoneNumber)
+        Log.d("recordUser", newContact.email)
+        Log.d("recordUser", newContact.notification)
+        Log.d("recordUser", newContact.isliked.toString())
     }
 }
+
 
 

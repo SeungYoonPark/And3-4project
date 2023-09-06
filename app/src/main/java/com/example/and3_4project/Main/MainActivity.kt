@@ -30,6 +30,7 @@ import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.and3_4project.Contact.ContactList
+import com.example.and3_4project.Contact.ContactListFragment
 import com.example.and3_4project.R
 import com.example.and3_4project.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayout
@@ -59,17 +60,18 @@ class MainActivity : AppCompatActivity() {
     lateinit var requestLauncher: ActivityResultLauncher<Intent>
     //버튼을 클릭시 생성할지 판단하는 변수
     private var fabCheck : Int = 0
-    private val getResult =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { reslut ->
-            if (reslut.resultCode == Activity.RESULT_OK) {
-                val data = reslut.data
-                val position = data?.getIntExtra("position", -1)
-                if (position != -1) {
-                    // 디테일 페이지에서 전달한 position을 사용하여 RecyclerView의 아이템을 업데이트
-                    position?.let { adapter.notifyItemChanged(it) }
-                }
-            }
-        }
+
+//    private val getResult =
+//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { reslut ->
+//            if (reslut.resultCode == Activity.RESULT_OK) {
+//                val data = reslut.data
+//                val position = data?.getIntExtra("position", -1)
+//                if (position != -1) {
+//                    // 디테일 페이지에서 전달한 position을 사용하여 RecyclerView의 아이템을 업데이트
+//                    position?.let { adapter.notifyItemChanged(it) }
+//                }
+//            }
+//        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,7 +89,7 @@ class MainActivity : AppCompatActivity() {
         //탭레이아웃 설정
         tabLayout.addTab(tabLayout.newTab().setText("Contact"))
         tabLayout.addTab(tabLayout.newTab().setText("Mypage"))
-//        Tab 아이콘 설정
+        //Tab 아이콘 설정
         tabLayout.getTabAt(0)?.setIcon(R.drawable.profile)
         tabLayout.getTabAt(1)?.setIcon(R.drawable.setting)
         // TabLayout의 탭 선택 리스너 설정
@@ -155,8 +157,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.fabAdd.setOnClickListener {
             showAddContactDialog()
-             //fabCheck = 0 이면 안 만들어지고, fabCheck = 1이면 만들어짐
-
         }
 
     }
@@ -266,6 +266,8 @@ class MainActivity : AppCompatActivity() {
 
                 if(fabCheck == 1){
 
+
+                    Log.d("fabCheck", "fabCheck : $fabCheck")
                     val newContact = ContactList(
                         uri,
                         userNameInput,
@@ -275,14 +277,9 @@ class MainActivity : AppCompatActivity() {
                         false
                     )
 
-                    Log.d("recordUserImg", uri.toString())
-                    Log.d("userNameInput", userNameInput)
-                    Log.d("R.drawable.heart", R.drawable.heart.toString())
-                    Log.d("userPhoneNumberInput", userPhoneNumberInput)
-                    Log.d("userEmailInput", userEmailInput)
-                    Log.d("selectTime", selectTime)
+                    // 아래 작업을 여기서 하지말고 ContactListFragment로 값을 넘겨주자
 
-                    InfoSingleton.contactList.add(newContact)
+                    (adapter.getFragment(0) as ContactListFragment).addContacntListSetting(newContact)
                 }
                 dialog.dismiss()
             }
@@ -388,7 +385,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-    //R.drawable ->
     //사진 갖고오기
     private val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()){
