@@ -88,9 +88,10 @@ class ContactDetailActivity : AppCompatActivity() {
             intent.putExtra("position", contactPosition)
             setResult(Activity.RESULT_OK, intent)
         }
-        //          전화걸기 버튼
+        var number = binding.tvNumber.text.toString()
+        //전화걸기 버튼
         binding.btnCall.setOnClickListener {
-            var number = binding.tvNumber.text.toString()
+
             val PERMISSIONS_CALL_PHONE = 1
             if (ContextCompat.checkSelfPermission(
                     this,
@@ -109,6 +110,17 @@ class ContactDetailActivity : AppCompatActivity() {
             }
 
         }
+        //메세지 보내기
+        binding.btnMassage.setOnClickListener {
+            val smsUri = Uri.parse("smsto:$number") //phonNumber에는 01012345678과 같은 구성.
+            val intent = Intent(Intent.ACTION_SENDTO)
+            intent.data = smsUri
+            intent.putExtra("sms_body", "") //해당 값에 전달하고자 하는 문자메시지 전달
+            startActivity(intent)
+
+
+        }
+
     }
 
     // 툴바 메뉴 버튼을 설정- menu에 있는 item을 연결하는 부분
