@@ -1,18 +1,23 @@
 package com.example.and3_4project.Contact
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.icu.text.Transliterator.Position
+import android.content.pm.PackageManager
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.example.and3_4project.Main.InfoSingleton.contactList
 import com.example.and3_4project.R
 import com.example.and3_4project.databinding.ActivityContactDetailBinding
+
 
 class ContactDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityContactDetailBinding
@@ -46,9 +51,9 @@ class ContactDetailActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar2)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        binding.toolbar2.title="상세화면"
-        // 뒤로가기 버튼에 클릭 리스너 추가
-
+        binding.toolbar2.title = "상세화면"
+        val customBackIcon = ResourcesCompat.getDrawable(resources, R.drawable.icon_back_2, null)
+        supportActionBar?.setHomeAsUpIndicator(customBackIcon)
 
 
         // 받은 데이터를 활용하여 디테일 화면 구성
@@ -65,6 +70,7 @@ class ContactDetailActivity : AppCompatActivity() {
             }
 
         }
+
         //좋아요버튼 클릭처리
         binding.ivHeart.setOnClickListener {
             val contact = contactList[contactPosition]
@@ -82,7 +88,29 @@ class ContactDetailActivity : AppCompatActivity() {
             intent.putExtra("position", contactPosition)
             setResult(Activity.RESULT_OK, intent)
         }
+        //          전화걸기 버튼
+        binding.btnCall.setOnClickListener {
+            var number = binding.tvNumber.text.toString()
+            val PERMISSIONS_CALL_PHONE = 1
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.CALL_PHONE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.CALL_PHONE),
+                    PERMISSIONS_CALL_PHONE
+                )
+            } else {
+                val callIntent = Intent(Intent.ACTION_CALL)
+                callIntent.data = Uri.parse("tel:" + number)
+                startActivity(callIntent)
+            }
+
+        }
     }
+
     // 툴바 메뉴 버튼을 설정- menu에 있는 item을 연결하는 부분
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(
@@ -91,6 +119,7 @@ class ContactDetailActivity : AppCompatActivity() {
         )       // main_menu 메뉴를 toolbar 메뉴 버튼으로 설정
         return true
     }
+
     //Toolbar 메뉴 클릭 이벤트
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
