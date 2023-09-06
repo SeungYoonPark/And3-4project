@@ -12,6 +12,13 @@ import com.example.and3_4project.databinding.ItemRecyclerviewBinding
 
 class RecyclerViewAdapter(private val mItems: MutableList<ContactList>)
     : RecyclerView.Adapter<RecyclerViewAdapter.Holder>() {
+    var myPosition = 0
+    fun getPosition():Int{
+        return myPosition
+    }
+    private fun setPostion(position: Int){
+        myPosition = position
+    }
 
 
     interface ItemClick {
@@ -31,9 +38,9 @@ class RecyclerViewAdapter(private val mItems: MutableList<ContactList>)
         //좋아요 버튼 클릭시 반영
         val contact=contactList[position]
         if (contact.isliked){
-            holder.isliked.setImageResource(R.drawable.heart_fill)
+            holder.isliked.setImageResource(R.drawable.icon_bookmark_fill)
         }else{
-            holder.isliked.setImageResource(R.drawable.heart)
+            holder.isliked.setImageResource(R.drawable.icon_bookmark)
         }
         holder.isliked.setOnClickListener {
             contact.isliked = !contact.isliked

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">And3-4Project</string>
+    <string name="app_name">Contact App</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="name_exception">이름이 비어있습니다. 이름을 입력해주세요.</string>
