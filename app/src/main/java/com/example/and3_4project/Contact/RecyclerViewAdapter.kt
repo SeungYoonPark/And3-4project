@@ -32,9 +32,9 @@ class RecyclerViewAdapter(val mItems: MutableList<ContactList>)
         //좋아요 버튼 클릭시 반영
         val contact=contactList[position]
         if (contact.isliked){
-            holder.isliked.setImageResource(R.drawable.heart_fill)
+            holder.isliked.setImageResource(R.drawable.icon_bookmark_fill)
         }else{
-            holder.isliked.setImageResource(R.drawable.heart)
+            holder.isliked.setImageResource(R.drawable.icon_bookmark)
         }
         holder.isliked.setOnClickListener {
             contact.isliked = !contact.isliked
