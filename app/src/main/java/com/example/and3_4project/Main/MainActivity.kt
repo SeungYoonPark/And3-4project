@@ -1,11 +1,15 @@
-package com.example.and3_4project
+package com.example.and3_4project.Main
+import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
@@ -20,10 +24,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatToggleButton
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.example.and3_4project.Contact.ContactList
+import com.example.and3_4project.Contact.ContactListFragment
+import com.example.and3_4project.R
 import com.example.and3_4project.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.Dispatchers
@@ -31,38 +39,59 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewPager2: ViewPager2
     private lateinit var adapter: FragmentPageAdapter
-
+    // 이 데이터들을 사용할 예정
     private var userNameInput: String = ""
     private var userPhoneNumberInput: String = ""
     private var userEmailInput: String = ""
-
     private lateinit var addUserImg : ImageView
+
     private var selectTime: String = ""
     private var notificationId: Int = 0
+    private var uri: Uri? = null
+    private lateinit var userName : EditText
+    private lateinit var userPhoneNumber : EditText
+
+    lateinit var requestLauncher: ActivityResultLauncher<Intent>
+    //버튼을 클릭시 생성할지 판단하는 변수
+    private var fabCheck : Int = 0
+
+//    private val getResult =
+//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { reslut ->
+//            if (reslut.resultCode == Activity.RESULT_OK) {
+//                val data = reslut.data
+//                val position = data?.getIntExtra("position", -1)
+//                if (position != -1) {
+//                    // 디테일 페이지에서 전달한 position을 사용하여 RecyclerView의 아이템을 업데이트
+//                    position?.let { adapter.notifyItemChanged(it) }
+//                }
+//            }
+//        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val toolbar = binding.toolBar
-        setSupportActionBar(toolbar)
 
         val viewPager2 = binding.viewPager
         val tabLayout = binding.tabLayout
 
+        //adapter 연결
         adapter = FragmentPageAdapter(supportFragmentManager, lifecycle)
         viewPager2.adapter = adapter
 
-        //탭설정
+        //탭레이아웃 설정
         tabLayout.addTab(tabLayout.newTab().setText("Contact"))
         tabLayout.addTab(tabLayout.newTab().setText("Mypage"))
-
-
+        //Tab 아이콘 설정
+        tabLayout.getTabAt(0)?.setIcon(R.drawable.profile)
+        tabLayout.getTabAt(1)?.setIcon(R.drawable.setting)
         // TabLayout의 탭 선택 리스너 설정
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
@@ -88,15 +117,47 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+
+
+        //초기화 코드라 onCreate에 설정해야 한다
+        // 사용자가 퍼미션 허용했는지 확인
+        val status = ContextCompat.checkSelfPermission(this, "android.permission.READ_CONTACTS")
+        if (status == PackageManager.PERMISSION_GRANTED) {
+            Log.d("test", "permission granted")
+        } else {
+            // 퍼미션 요청 다이얼로그 표시
+            ActivityCompat.requestPermissions(this, arrayOf<String>("android.permission.READ_CONTACTS"), 100)
+            Log.d("test", "permission denied")
+        }
+
+        // ActivityResultLauncher 초기화, 결과 콜백 정의
+        requestLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                val cursor = contentResolver.query(
+                    it.data!!.data!!,
+                    arrayOf<String>(
+                        ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                        ContactsContract.CommonDataKinds.Phone.NUMBER,
+                    ),
+                    null,
+                    null,
+                    null
+                )
+                Log.d("test", "cursor size : ${cursor?.count}")
+
+                if (cursor!!.moveToFirst()) {
+                    val name = cursor.getString(0)
+                    val phone = cursor.getString(1)
+                    //수정하기
+                    userName.setText(name)
+                    userPhoneNumber.setText(phone)
+                }
+            }
+        }
+
         binding.fabAdd.setOnClickListener {
             showAddContactDialog()
         }
-
-//        val dataList = mutableListOf<ContactList>()
-//        dataList.add(ContactList(R.drawable.ic_launcher_foreground, "이승훈", "01000000000"))
-//        val adapter = Adapter(dataList)
-//        binding.recyclerView.adapter = adapter
-//        binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
     }
 
@@ -106,30 +167,38 @@ class MainActivity : AppCompatActivity() {
         val dialogLayout = inflater.inflate(R.layout.fragment_add_contact_dialog, null)
         val Cancel = dialogLayout.findViewById<Button>(R.id.cancel)
         val Save = dialogLayout.findViewById<Button>(R.id.save)
-        addUserImg = dialogLayout.findViewById<ImageView>(R.id.addUserImg)
+        addUserImg = dialogLayout.findViewById(R.id.addUserImg)
 
         val offBtn = dialogLayout.findViewById<AppCompatToggleButton>(R.id.off)
         val fivePastBtn = dialogLayout.findViewById<AppCompatToggleButton>(R.id.fivePast)
         val quarterPastBtn = dialogLayout.findViewById<AppCompatToggleButton>(R.id.quarterPast)
         val halfPastBtn = dialogLayout.findViewById<AppCompatToggleButton>(R.id.halfPast)
+        //주소록 버튼 설정
+        val addUserContactBookBtn = dialogLayout.findViewById<ImageView>(R.id.addUserContactBook)
 
-        var userName = dialogLayout.findViewById<EditText>(R.id.addUserName)
-        var userPhoneNumber = dialogLayout.findViewById<EditText>(R.id.addUserPhoneNumber)
+        userName = dialogLayout.findViewById<EditText>(R.id.addUserName)
+        userPhoneNumber = dialogLayout.findViewById<EditText>(R.id.addUserPhoneNumber)
         userPhoneNumber.filters = arrayOf(InputFilter.LengthFilter(13))
 
         val userEmailLeft = dialogLayout.findViewById<EditText>(R.id.addUserEmailLeft)
         val userEmailRight = dialogLayout.findViewById<EditText>(R.id.addUserEmailRight)
 
-        addUserImg.setColorFilter(ContextCompat.getColor(this, R.color.white))
-        addUserImg.setImageResource(R.drawable.user)
+
 
         builder.setView(dialogLayout)
         val dialog = builder.create()
         dialog.show()
 
+        //버튼을 클릭시 생성할지 판단하는 변수
+        fabCheck = 0
+
+        //주소록 버튼 설정
+        addUserContactBookBtn.setOnClickListener{
+            val intent = Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI)
+            requestLauncher.launch(intent)
+        }
+
         addUserImg.setOnClickListener{
-            //다시 기본 필터로 변경
-            addUserImg.setColorFilter(null)
             //갤러리 호출
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
@@ -175,10 +244,7 @@ class MainActivity : AppCompatActivity() {
             val EmailRight = userEmailRight.text.toString()
             userEmailInput = "$EmailLeft@$EmailRight"
 
-            Log.d("useong", "userNameInput: $userNameInput")
-            Log.d("useong", "userNameInput: $userPhoneNumberInput")
 
-            Log.d("useong", "userNameInput: $userEmailInput")
             if (userNameInput.isEmpty()) {
                 Toast.makeText(this, R.string.name_exception, Toast.LENGTH_SHORT).show()
             } else if (userPhoneNumberInput.isEmpty()) {
@@ -195,12 +261,35 @@ class MainActivity : AppCompatActivity() {
             } else if (!isValidEmail(userEmailInput)) {
                 Toast.makeText(this, R.string.email_policy_exception, Toast.LENGTH_SHORT).show()
             } else {
+                fabCheck = 1
                 createScheduleNotification(this, selectTime, notificationId)
+
+                if(fabCheck == 1){
+
+
+                    Log.d("fabCheck", "fabCheck : $fabCheck")
+                    val newContact = ContactList(
+                        uri,
+                        userNameInput,
+                        userPhoneNumberInput,
+                        userEmailInput,
+                        selectTime,
+                        false
+                    )
+
+                    // 아래 작업을 여기서 하지말고 ContactListFragment로 값을 넘겨주자
+
+                    (adapter.getFragment(0) as ContactListFragment).addContacntListSetting(newContact)
+                }
                 dialog.dismiss()
             }
         }
 
         Cancel.setOnClickListener {
+            userName.text.clear()
+            userPhoneNumber.text.clear()
+            userEmailLeft.text.clear()
+            userEmailRight.text.clear()
             dialog.dismiss()
         }
 
@@ -296,7 +385,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
     //사진 갖고오기
     private val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()){
@@ -304,12 +392,28 @@ class MainActivity : AppCompatActivity() {
         //결과 코드 OK , 결가값 null 아니면
         if(it.resultCode == RESULT_OK && it.data != null){
             //값 담기
-            val uri  = it.data!!.data
+            uri  = it.data!!.data
 
             //화면에 보여주기
             Glide.with(this)
-                .load(uri) //이미지
-                .into(addUserImg) //보여줄 위치
+                .load(uri)         //이미지 uri
+                .fitCenter()
+                .into(addUserImg)             //보여줄 위치  ImageView
+        }
+    }
+
+    // 주소록에서 이름이랑 전화번호 갖고오기
+    // 다이얼로그에서 퍼미션 허용했는지 확인
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Log.d("test", "permission granted")
+        } else {
+            Log.d("test", "permission denied")
         }
     }
 }

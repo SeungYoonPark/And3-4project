@@ -3,17 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/under"
+        android:id="@+id/edit"
         android:title="설정"
-        android:icon="@android:drawable/ic_menu_set_as"
+        android:icon="@drawable/icon_edit"
+        app:tabIconTint="@color/tab_color_selector"
         app:showAsAction="ifRoom"/>
 
-    <item
-        android:id="@+id/notification"
-        android:title="뒤로가기"
-        android:enabled="true"
-        android:icon="@android:drawable/ic_delete"
-        app:showAsAction="always" />
+
 
 
 </menu>
