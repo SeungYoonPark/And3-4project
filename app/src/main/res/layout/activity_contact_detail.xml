@@ -7,6 +7,23 @@
     android:background="@color/light_grey"
     tools:context=".Main.MyPageFragment">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tb_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:menu="@menu/toolbar_menu"
+        android:minHeight="?attr/actionBarSize"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        >
+
+
+    </androidx.appcompat.widget.Toolbar>
+
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

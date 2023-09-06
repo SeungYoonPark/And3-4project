@@ -5,14 +5,16 @@
     <item
         android:id="@+id/under"
         android:title="설정"
-        android:icon="@android:drawable/ic_menu_set_as"
-        app:showAsAction="ifRoom"/>
+        android:icon="@drawable/icon_menu"
+        app:showAsAction="ifRoom"
+        android:iconTint="@color/black"/>
 
     <item
         android:id="@+id/notification"
         android:title="뒤로가기"
         android:enabled="true"
-        android:icon="@android:drawable/ic_delete"
+        android:icon="@drawable/icon_back"
+        android:iconTint="@color/black"
         app:showAsAction="always" />
 
 
