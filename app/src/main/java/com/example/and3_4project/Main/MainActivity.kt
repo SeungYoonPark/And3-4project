@@ -1,5 +1,6 @@
 package com.example.and3_4project.Main
 import android.app.Activity
+import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -156,14 +157,35 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.fabAdd.setOnClickListener {
-            showAddContactDialog()
+            showAddContactDialog(
+                uri,
+                userNameInput,
+                userPhoneNumberInput,
+                userEmailInput,
+                selectTime,
+                this
+            )
         }
 
     }
-
-    private fun showAddContactDialog() {
-        val builder = AlertDialog.Builder(this)
-        val inflater = LayoutInflater.from(this)
+///contactfragment에 저장된것을 알려줘야한다
+    fun showAddContactDialog
+                ( uriSet: Uri?,
+                  userNameSet: String,
+                  userPhoneNumberSet: String,
+                  userEmailSet: String,
+                  selectTimeSet: String, context: Context
+                   ) {
+        var builder: AlertDialog.Builder
+        var inflater: LayoutInflater
+        if (userNameSet == ""){
+            builder = AlertDialog.Builder(this)
+            inflater = LayoutInflater.from(this)}
+        else {
+            builder = AlertDialog.Builder(context)
+            inflater = LayoutInflater.from(context)
+            // userNameSet이 비어있지 않은 경우에 대한 처리
+        }
         val dialogLayout = inflater.inflate(R.layout.fragment_add_contact_dialog, null)
         val Cancel = dialogLayout.findViewById<Button>(R.id.cancel)
         val Save = dialogLayout.findViewById<Button>(R.id.save)
@@ -191,6 +213,45 @@ class MainActivity : AppCompatActivity() {
 
         //버튼을 클릭시 생성할지 판단하는 변수
         fabCheck = 0
+
+        // 값 수정하기   -> 이름 값이 비어있지 않을때
+        if(userNameSet != ""){
+            addUserImg.setImageURI(uriSet)
+            userName.setText(userNameSet)
+            userPhoneNumber.setText(userPhoneNumberSet)
+            val parts = userEmailSet.split("@")
+            userEmailLeft.setText(parts[0])
+            userEmailRight.setText(parts[1])
+            when(selectTimeSet){
+                "OFF"->{
+                    offBtn.isChecked = true
+                    fivePastBtn.isChecked = false
+                    quarterPastBtn.isChecked = false
+                    halfPastBtn.isChecked = false
+                }
+                "5분 뒤 알림"->{
+                    offBtn.isChecked = false
+                    fivePastBtn.isChecked = true
+                    quarterPastBtn.isChecked = false
+                    halfPastBtn.isChecked = false
+                }
+                "15분 뒤 알림"->{
+                    offBtn.isChecked = false
+                    fivePastBtn.isChecked = false
+                    quarterPastBtn.isChecked = true
+                    halfPastBtn.isChecked = false
+                }
+                "30분 뒤 알림"->{
+                    offBtn.isChecked = false
+                    fivePastBtn.isChecked = false
+                    quarterPastBtn.isChecked = false
+                    halfPastBtn.isChecked = true
+                }
+                else->{}
+
+            }
+
+        }
 
         //주소록 버튼 설정
         addUserContactBookBtn.setOnClickListener{
@@ -238,6 +299,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         Save.setOnClickListener {
+            //값 설정하기
             userNameInput = userName.text.toString()
             userPhoneNumberInput = userPhoneNumber.text.toString()
             val EmailLeft = userEmailLeft.text.toString()
@@ -250,8 +312,7 @@ class MainActivity : AppCompatActivity() {
             } else if (userPhoneNumberInput.isEmpty()) {
                 Toast.makeText(this, R.string.phone_number_exception, Toast.LENGTH_SHORT).show()
             } else if (!isValidPhoneNumber(userPhoneNumberInput)) {
-                Toast.makeText(this, R.string.phone_number_policy_exception, Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(this, R.string.phone_number_policy_exception, Toast.LENGTH_SHORT).show()
             }
 
             else if (EmailLeft.isEmpty()) {
@@ -281,6 +342,11 @@ class MainActivity : AppCompatActivity() {
 
                     (adapter.getFragment(0) as ContactListFragment).addContacntListSetting(newContact)
                 }
+                uri = null
+                userNameInput = ""
+                userPhoneNumberInput = ""
+                userEmailInput = ""
+                selectTime = ""
                 dialog.dismiss()
             }
         }
@@ -319,6 +385,7 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+
     }
 
     private fun isValidPhoneNumber(phoneNumber: String): Boolean {
@@ -336,11 +403,12 @@ class MainActivity : AppCompatActivity() {
         selectTime: String,
         notificationId: Int
     ) {
+        //알림을 생성하고 예약하는데 사용된다
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val channelId = "ChannelId"
 
-
+        //알림 채널에 연결한다
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 channelId.toString(),
@@ -351,12 +419,12 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        val intent = Intent(context, MainActivity::class.java)
+        val intent = Intent(context, ContactListFragment::class.java)
         val pendingIntent = PendingIntent.getActivity(
             context,
             0,
             intent,
-            PendingIntent.FLAG_IMMUTABLE
+            PendingIntent.FLAG_MUTABLE
         )
 
         val timeInMillis = when (selectTime) {
@@ -378,7 +446,7 @@ class MainActivity : AppCompatActivity() {
                     .setSmallIcon(R.drawable.alarm)
                     .setContentTitle("연락처 알림")
                     .setContentText("$userNameInput 에게 연락을 할 시간입니다.")
-                    .setContentIntent(pendingIntent)
+                    .setContentIntent(pendingIntent) // 클릭 시 실행할 Intent 설정
                     .setAutoCancel(true)
 
                 notificationManager.notify(notificationId, notificationBuilder.build())
