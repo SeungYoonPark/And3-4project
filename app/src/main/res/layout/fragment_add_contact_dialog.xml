@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/light_grey">
 
 
     <ImageView
@@ -28,24 +29,26 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.10">
 
-    <ImageView
-        android:id="@+id/addUserImg"
-        android:src="@drawable/icon_add_photo"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:background="@color/dark_grey"
-        android:scaleType="center"/>
+        <ImageView
+            android:id="@+id/addUserImg"
+            android:src="@drawable/profile_white"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@color/dark_grey"
+            android:scaleType="fitXY"/>
 
     </androidx.cardview.widget.CardView>
 
     <EditText
         android:id="@+id/addUserName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:padding="10dp"
+        android:background="@drawable/edit_text_background"
         android:layout_margin="15dp"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
-        android:hint="Name"
+        android:hint="이름"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,11 +58,13 @@
     <EditText
         android:id="@+id/addUserPhoneNumber"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:padding="10dp"
+        android:background="@drawable/edit_text_background"
         android:layout_margin="15dp"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
-        android:hint="Phone Number"
+        android:hint="전화번호"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,11 +74,13 @@
     <EditText
         android:id="@+id/addUserEmailLeft"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:padding="10dp"
+        android:background="@drawable/edit_text_background"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="15dp"
-        android:hint="로컬 아이디"
+        android:hint="아이디"
         app:layout_constraintEnd_toStartOf="@+id/addUserEmailAt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addUserPhoneNumber" />
@@ -83,6 +90,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@"
+        android:textColor="@color/dark_grey"
         app:layout_constraintBaseline_toBaselineOf="@+id/addUserEmailLeft"
         app:layout_constraintEnd_toStartOf="@+id/addUserEmailRight"
         app:layout_constraintStart_toEndOf="@+id/addUserEmailLeft" />
@@ -90,7 +98,9 @@
     <EditText
         android:id="@+id/addUserEmailRight"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:padding="10dp"
+        android:background="@drawable/edit_text_background"
         android:layout_marginTop="15dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="15dp"
@@ -99,7 +109,7 @@
         app:layout_constraintStart_toEndOf="@+id/addUserEmailAt"
         app:layout_constraintTop_toBottomOf="@+id/addUserPhoneNumber" />
 
-    <androidx.appcompat.widget.AppCompatToggleButton
+    <ToggleButton
         android:id="@+id/off"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
@@ -154,8 +164,9 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="20dp"
-        android:text="CANCEL"
-        app:backgroundTint="@color/white"
+        android:text="취소"
+        android:background="@drawable/edit_text_background"
+        app:backgroundTint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/halfPast" />
@@ -167,8 +178,9 @@
         android:layout_marginTop="15dp"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="20dp"
-        android:text="SAVE"
-        app:backgroundTint="@color/white"
+        android:text="저장"
+        android:background="@drawable/edit_text_background"
+        app:backgroundTint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/quarterPast" />

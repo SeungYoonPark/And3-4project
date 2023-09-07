@@ -30,6 +30,7 @@ class ContactListFragment : Fragment() {
     private var contactList = InfoSingleton.getcontactList()
 
     private val adapter = RecyclerViewAdapter(contactList)
+    private val gridAdapter = GridRecyclerViewAdapter(contactList)
 
     fun newInstant(): ContactListFragment {
         val args = Bundle()
@@ -50,6 +51,7 @@ class ContactListFragment : Fragment() {
         setHasOptionsMenu(true)
 
         binding.recyclerView.adapter = adapter
+
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
 
         adapter.itemClick = object : RecyclerViewAdapter.ItemClick {
@@ -60,19 +62,21 @@ class ContactListFragment : Fragment() {
 
 
         binding.toolbar.setOnMenuItemClickListener {
+
             when (it.itemId) {
                 R.id.grid_menu -> {
-
                     if (viewType){
                     it.setIcon(R.drawable.icon_menu_line)
-                        binding.recyclerView.layoutManager = GridLayoutManager(activity,2)}
-
-
+                        binding.recyclerView.adapter = gridAdapter
+                        gridAdapter.itemClick = object : GridRecyclerViewAdapter.ItemClick {
+                            override fun onClick(view: View, position: Int) {
+                                startActivity(ContactDetailActivity.newIntentForDetail(context, position))
+                            }
+                        }
+                        binding.recyclerView.layoutManager = GridLayoutManager(activity,2) }
                     else {it.setIcon(R.drawable.icon_menu)
+                        binding.recyclerView.adapter= adapter
                         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
-
-
-
                     }
                     viewType = !viewType
                     true
@@ -83,8 +87,6 @@ class ContactListFragment : Fragment() {
             true
         }
         return binding.root
-
-
     }
 
     override fun onResume() {
@@ -92,6 +94,7 @@ class ContactListFragment : Fragment() {
         // 데이터 변경 시 어댑터에 알림
         adapter.notifyDataSetChanged()
     }
+
 
     fun addContacntListSetting(newContact: ContactList){
 
@@ -107,6 +110,5 @@ class ContactListFragment : Fragment() {
         Log.d("recordUser", newContact.isliked.toString())
     }
 }
-
 
 
