@@ -8,68 +8,68 @@ object InfoSingleton {
     var contactList: MutableList<ContactList> = mutableListOf(
         ContactList(
 
-            Uri.parse("android.resource://" + R::class.java.`package`?.name + "/" + R.drawable.dog1),
+            Uri.parse("android.resource://" + R::class.java.`package`?.name + "/" + R.drawable.profile_white),
             "김영현",
-            "010-6688-3596",
+            "010-1111-1234",
             "kyhi525@naver.com",
-            "알림이 없습니다."
+            "OFF"
         ), ContactList(
 
-            Uri.parse("android.resource://" + R::class.java.`package`?.name + "/" + R.drawable.cat),
+            Uri.parse("android.resource://" + R::class.java.`package`?.name + "/" + R.drawable.profile0),
             "나유성",
-            "010-1234-1234",
-            "kyhi525@naver.com",
-            "알림이 없습니다."
+            "010-2222-1234",
+            "yu12@gmail.com",
+            "OFF"
         ), ContactList(
 
-            Uri.parse("android.resource://" + R::class.java.`package`?.name + "/" + R.drawable.cat2),
-            "박승윤",
-            "010-1111-2222",
-            "kyhi525@naver.com",
-            "알림이 없습니다."
-        ), ContactList(
-
-            Uri.parse("android.resource://" + R::class.java.`package`?.name + "/" + R.drawable.cat10),
+            Uri.parse("android.resource://" + R::class.java.`package`?.name + "/" + R.drawable.profile2),
             "이승훈",
-            "010-3333-4444",
-            "kyhi525@naver.com",
-            "알림이 없습니다."
+            "010-4444-1234",
+            "sh62@gmail.com",
+            "OFF"
         ), ContactList(
 
-            Uri.parse("android.resource://" + R::class.java.`package`?.name + "/" + R.drawable.cat14),
-            "김뽀삐",
-            "010-0987-7789",
-            "kyhi525@naver.com",
-            "알림이 없습니다."
+            Uri.parse("android.resource://" + R::class.java.`package`?.name + "/" + R.drawable.profile3),
+            "박승윤",
+            "010-5555-1234",
+            "sy34@gmail.com",
+            "OFF"
         ), ContactList(
 
-            Uri.parse("android.resource://" + R::class.java.`package`?.name + "/" + R.drawable.bbang),
-            "빵빵이",
-            "010-0000-0000",
-            "kyhi525@naver.com",
-            "알림이 없습니다."
+            Uri.parse("android.resource://" + R::class.java.`package`?.name + "/" + R.drawable.profile4),
+            "호랑이",
+            "010-6666-1234",
+            "hodols@gmail.com",
+            "OFF"
         ), ContactList(
 
-            Uri.parse("android.resource://" + R::class.java.`package`?.name + "/" + R.drawable.oksun),
-            "옥지얌",
-            "010-5757-2734",
-            "kyhi525@naver.com",
-            "알림이 없습니다."
+            Uri.parse("android.resource://" + R::class.java.`package`?.name + "/" + R.drawable.profile5),
+            "강아지",
+            "010-7777-1234",
+            "bowbow@gmail.com",
+            "OFF"
         ), ContactList(
 
-            Uri.parse("android.resource://" + R::class.java.`package`?.name + "/" + R.drawable.poketmon),
-            "이상해씨",
-            "010-2424-9865",
-            "kyhi525@naver.com",
-            "알림이 없습니다."
+            Uri.parse("android.resource://" + R::class.java.`package`?.name + "/" + R.drawable.profile6),
+            "사자",
+            "010-8888-1234",
+            "lionking@gmail.com",
+            "OFF"
+        ), ContactList(
+
+            Uri.parse("android.resource://" + R::class.java.`package`?.name + "/" + R.drawable.profile7),
+            "고양이",
+            "010-9999-1234",
+            "miyao55@gmail.com",
+            "OFF"
         ), ContactList(
 
 
-            Uri.parse("android.resource://" + R::class.java.`package`?.name + "/" + R.drawable.poketmon2),
-            "피카츄",
-            "010-9999-7654",
-            "kyhi525@naver.com",
-            "알림이 없습니다."
+            Uri.parse("android.resource://" + R::class.java.`package`?.name + "/" + R.drawable.profile8),
+            "곰이올시다",
+            "010-1234-1234",
+            "bear1@gmail.com",
+            "OFF"
         )
     )
 
