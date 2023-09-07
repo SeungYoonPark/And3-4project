@@ -1,12 +1,12 @@
 package com.example.and3_4project.Contact
 
+
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.marginBottom
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.and3_4project.Main.InfoSingleton
@@ -49,7 +49,7 @@ class ContactListFragment : Fragment() {
         binding = FragmentContactListBinding.inflate(inflater, container, false)
 
         setHasOptionsMenu(true)
-        
+
         binding.recyclerView.adapter = adapter
 
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
@@ -89,10 +89,15 @@ class ContactListFragment : Fragment() {
         return binding.root
     }
 
-
+    override fun onResume() {
+        super.onResume()
+        // 데이터 변경 시 어댑터에 알림
+        adapter.notifyDataSetChanged()
+    }
 
 
     fun addContacntListSetting(newContact: ContactList){
+
         InfoSingleton.contactList.add(newContact)
         contactList = InfoSingleton.getcontactList()
         adapter.notifyDataSetChanged()//addItems(contactList)

@@ -7,14 +7,22 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.text.InputFilter
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatToggleButton
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.example.and3_4project.Main.InfoSingleton.contactList
+import com.example.and3_4project.Main.MainActivity
 import com.example.and3_4project.R
 import com.example.and3_4project.databinding.ActivityContactDetailBinding
 
@@ -116,11 +124,19 @@ class ContactDetailActivity : AppCompatActivity() {
             intent.data = smsUri
             intent.putExtra("sms_body", "") //해당 값에 전달하고자 하는 문자메시지 전달
             startActivity(intent)
+        }
 
-
+        //알림 설정하기
+        binding.btnNotifycation.setOnClickListener{
+            val mainActivity = MainActivity()
+            mainActivity.showAddContactDialog(profileImg,contactName,phoneNumber,email,notification,this)
         }
 
     }
+
+
+
+
 
     // 툴바 메뉴 버튼을 설정- menu에 있는 item을 연결하는 부분
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
