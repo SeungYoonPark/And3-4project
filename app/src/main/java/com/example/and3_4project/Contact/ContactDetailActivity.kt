@@ -32,11 +32,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.and3_4project.Main.FragmentPageAdapter
 import com.example.and3_4project.Main.InfoSingleton.contactList
-import com.example.and3_4project.Main.MainActivity
 import com.example.and3_4project.R
 import com.example.and3_4project.databinding.ActivityContactDetailBinding
 import kotlinx.coroutines.Dispatchers
@@ -48,23 +46,21 @@ import kotlinx.coroutines.runBlocking
 class ContactDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityContactDetailBinding
-
-    private lateinit var addUserImg : ImageView
+    private lateinit var addUserImg: ImageView
 
     //사진 설정
-    private lateinit var profileUri : Uri
+    private lateinit var profileUri: Uri
 
-
-    private lateinit var contactName : String
-    private lateinit var phoneNumber : String
-    private lateinit var email : String
-    private lateinit var notification : String
-
-    private lateinit var userName : EditText
-    private lateinit var userPhoneNumber : EditText
-
+    private lateinit var contactName: String
+    private lateinit var phoneNumber: String
+    private lateinit var email: String
+    private lateinit var notification: String
+    private lateinit var userName: EditText
+    private lateinit var userPhoneNumber: EditText
     private lateinit var requestLauncher: ActivityResultLauncher<Intent>
-    private lateinit var contact : ContactList
+    private lateinit var contact: ContactList
+
+
     companion object {
         var contactPosition: Int = 0
         fun newIntentForDetail(context: Context?, position: Int) =
@@ -169,23 +165,19 @@ class ContactDetailActivity : AppCompatActivity() {
         }
 
         //알림 설정하기
-        binding.btnNotifycation.setOnClickListener{
-            showAddContactDialog(profileUri,contactName,phoneNumber,email,notification,contact.isliked,this,contactPosition)
+        binding.btnNotifycation.setOnClickListener {
+            showAddContactDialog(
+                profileUri,
+                contactName,
+                phoneNumber,
+                email,
+                notification,
+                contact.isliked,
+                this,
+                contactPosition
+            )
 
-            binding.apply {
-                tvAdress.text = contact.email
-                tvNumber.text = contact.phoneNumber
-                tvName.text = contact.contactName
-                Glide.with(root.context) // 또는 Glide.with(ivProfile.context)
-                    .load(contact.profileImg)
-                    .fitCenter()
-                    .into(ivProfile)
-                //ivProfile.setImageURI(contact.profileImg)
-                tvNotification.text = contact.notification
-            }
         }
-//        val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
-//        val grant = PackageManager.PERMISSION_GRANTED
         //초기화 코드라 onCreate에 설정해야 한다
         // 사용자가 퍼미션 허용했는지 확인
         val status = ContextCompat.checkSelfPermission(this, "android.permission.READ_CONTACTS")
@@ -193,34 +185,39 @@ class ContactDetailActivity : AppCompatActivity() {
             Log.d("test", "permission granted")
         } else {
             // 퍼미션 요청 다이얼로그 표시
-            ActivityCompat.requestPermissions(this, arrayOf<String>("android.permission.READ_CONTACTS"), 100)
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf<String>("android.permission.READ_CONTACTS"),
+                100
+            )
             Log.d("test", "permission denied")
         }
 
         // ActivityResultLauncher 초기화, 결과 콜백 정의
-        requestLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == RESULT_OK) {
-                val cursor = contentResolver.query(
-                    it.data!!.data!!,
-                    arrayOf<String>(
-                        ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-                        ContactsContract.CommonDataKinds.Phone.NUMBER,
-                    ),
-                    null,
-                    null,
-                    null
-                )
-                Log.d("test", "cursor size : ${cursor?.count}")
+        requestLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                if (it.resultCode == RESULT_OK) {
+                    val cursor = contentResolver.query(
+                        it.data!!.data!!,
+                        arrayOf<String>(
+                            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                            ContactsContract.CommonDataKinds.Phone.NUMBER,
+                        ),
+                        null,
+                        null,
+                        null
+                    )
+                    Log.d("test", "cursor size : ${cursor?.count}")
 
-                if (cursor!!.moveToFirst()) {
-                    val name = cursor.getString(0)
-                    val phone = cursor.getString(1)
-                    //수정하기
-                    userName.setText(name)
-                    userPhoneNumber.setText(phone)
+                    if (cursor!!.moveToFirst()) {
+                        val name = cursor.getString(0)
+                        val phone = cursor.getString(1)
+                        //수정하기
+                        userName.setText(name)
+                        userPhoneNumber.setText(phone)
+                    }
                 }
             }
-        }
     }
 
 
@@ -234,31 +231,40 @@ class ContactDetailActivity : AppCompatActivity() {
     }
 
     //Toolbar 메뉴 클릭 이벤트
-    //fr
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> { //뒤로 가기 버튼
                 finish()
 
             }
+
             R.id.edit -> {
-                showAddContactDialog(profileUri,contactName,phoneNumber,email,notification,contact.isliked,this,contactPosition)
+                showAddContactDialog(
+                    profileUri,
+                    contactName,
+                    phoneNumber,
+                    email,
+                    notification,
+                    contact.isliked,
+                    this,
+                    contactPosition
+                )
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
-    fun showAddContactDialog
-    (uriSet: Uri?,
-    userNameSet: String,
-    userPhoneNumberSet: String,
-    userEmailSet: String,
-    notificationSet: String,
-    isliked : Boolean,
+    fun showAddContactDialog(
+        uriSet: Uri?,
+        userNameSet: String,
+        userPhoneNumberSet: String,
+        userEmailSet: String,
+        notificationSet: String,
+        isliked: Boolean,
 
-    context: Context,
-    position: Int = -1
-    ){
+        context: Context,
+        position: Int = -1
+    ) {
 
 
         var builder = AlertDialog.Builder(context)
@@ -288,12 +294,12 @@ class ContactDetailActivity : AppCompatActivity() {
 
         //변수 설정     (전달할 값을 설정하기)
         var setUri: Uri? = uriSet
-        var setContactName : String
-        var setPhoneNumber : String
-        var setEmail:String
-        var setNotification : String = notificationSet
+        var setContactName: String
+        var setPhoneNumber: String
+        var setEmail: String
+        var setNotification: String = notificationSet
 
-        var setNotificationId : Int = 0
+        var setNotificationId: Int = 0
 
 
         builder.setView(dialogLayout)
@@ -301,7 +307,7 @@ class ContactDetailActivity : AppCompatActivity() {
         dialog.show()
 
         // 값 기입하기 알림에서 들어갔을때
-        if(userNameSet != ""){      //contextSet != context){              //
+        if (userNameSet != "") {      //contextSet != context){              //
             Glide.with(context) // 또는 Glide.with(ivProfile.context)
                 .load(uriSet)
                 .fitCenter()
@@ -314,51 +320,56 @@ class ContactDetailActivity : AppCompatActivity() {
             userEmailLeft.setText(parts[0])
             userEmailRight.setText(parts[1])
 
-            when(notificationSet){
-                "OFF"->{
+            when (notificationSet) {
+                "OFF" -> {
                     offBtn.isChecked = true
                     fivePastBtn.isChecked = false
                     quarterPastBtn.isChecked = false
                     halfPastBtn.isChecked = false
                 }
-                "5분 뒤 알림"->{
+
+                "5분 뒤 알림" -> {
                     offBtn.isChecked = false
                     fivePastBtn.isChecked = true
                     quarterPastBtn.isChecked = false
                     halfPastBtn.isChecked = false
                 }
-                "15분 뒤 알림"->{
+
+                "15분 뒤 알림" -> {
                     offBtn.isChecked = false
                     fivePastBtn.isChecked = false
                     quarterPastBtn.isChecked = true
                     halfPastBtn.isChecked = false
                 }
-                "30분 뒤 알림"->{
+
+                "30분 뒤 알림" -> {
                     offBtn.isChecked = false
                     fivePastBtn.isChecked = false
                     quarterPastBtn.isChecked = false
                     halfPastBtn.isChecked = true
                 }
-                else->{}
+
+                else -> {}
 
             }
 
         }
 
         //주소록 버튼 설정
-        addUserContactBookBtn.setOnClickListener{
-            val intent = Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI)
+        addUserContactBookBtn.setOnClickListener {
+            val intent =
+                Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI)
             requestLauncher!!.launch(intent)
         }
 
-        addUserImg.setOnClickListener{
+        addUserImg.setOnClickListener {
             //갤러리 호출
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
             activityResult.launch(intent)
         }
 
-        offBtn.setOnClickListener{
+        offBtn.setOnClickListener {
             setNotification = "OFF"
             setNotificationId = 1
             fivePastBtn.isChecked = false
@@ -366,7 +377,7 @@ class ContactDetailActivity : AppCompatActivity() {
             halfPastBtn.isChecked = false
         }
 
-        fivePastBtn.setOnClickListener{
+        fivePastBtn.setOnClickListener {
             setNotification = "5분 뒤 알림"
             setNotificationId = 2
             offBtn.isChecked = false
@@ -375,7 +386,7 @@ class ContactDetailActivity : AppCompatActivity() {
             halfPastBtn.isChecked = false
         }
 
-        quarterPastBtn.setOnClickListener{
+        quarterPastBtn.setOnClickListener {
             setNotification = "15분 뒤 알림"
             setNotificationId = 3
             offBtn.isChecked = false
@@ -384,7 +395,7 @@ class ContactDetailActivity : AppCompatActivity() {
             halfPastBtn.isChecked = false
         }
 
-        halfPastBtn.setOnClickListener{
+        halfPastBtn.setOnClickListener {
             setNotification = "30분 뒤 알림"
             setNotificationId = 4
             offBtn.isChecked = false
@@ -393,7 +404,7 @@ class ContactDetailActivity : AppCompatActivity() {
 
         }
 
-        if (userNameSet == ""){             //(contextSet == context){//
+        if (userNameSet == "") {             //(contextSet == context){//
             Save.setOnClickListener {
                 //값 설정하기
                 Log.d("recordUser", 1.toString())
@@ -407,19 +418,30 @@ class ContactDetailActivity : AppCompatActivity() {
                 if (setContactName.isEmpty()) {
                     Toast.makeText(context, R.string.name_exception, Toast.LENGTH_SHORT).show()
                 } else if (setPhoneNumber.isEmpty()) {
-                    Toast.makeText(context, R.string.phone_number_exception, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, R.string.phone_number_exception, Toast.LENGTH_SHORT)
+                        .show()
                 } else if (!isValidPhoneNumber(setPhoneNumber)) {
-                    Toast.makeText(context, R.string.phone_number_policy_exception, Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        context,
+                        R.string.phone_number_policy_exception,
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 } else if (EmailLeftInput.isEmpty()) {
                     Toast.makeText(context, R.string.email_exception, Toast.LENGTH_SHORT).show()
                 } else if (EmailRightInput.isEmpty()) {
                     Toast.makeText(context, R.string.email_exception, Toast.LENGTH_SHORT).show()
                 } else if (!isValidEmail(setEmail)) {
-                    Toast.makeText(context, R.string.email_policy_exception, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, R.string.email_policy_exception, Toast.LENGTH_SHORT)
+                        .show()
                 } else {
 
-                    createScheduleNotification(context, notificationSet, setNotificationId, setContactName)
+                    createScheduleNotification(
+                        context,
+                        notificationSet,
+                        setNotificationId,
+                        setContactName
+                    )
 
                     val newContact = ContactList(
                         setUri,
@@ -430,7 +452,9 @@ class ContactDetailActivity : AppCompatActivity() {
                         false
                     )
 
-                    (adapter.getFragment(0) as ContactListFragment).addContacntListSetting(newContact!!)
+                    (adapter.getFragment(0) as ContactListFragment).addContacntListSetting(
+                        newContact!!
+                    )
 
                     dialog.dismiss()
                 }
@@ -438,7 +462,7 @@ class ContactDetailActivity : AppCompatActivity() {
 
         }
         //ContactDetailActivity
-        else{
+        else {
             Log.d("recordUser", 2.toString())
 
             val setBtn = dialogLayout.findViewById<Button>(R.id.save)
@@ -455,16 +479,22 @@ class ContactDetailActivity : AppCompatActivity() {
                 if (setContactName.isEmpty()) {
                     Toast.makeText(context, R.string.name_exception, Toast.LENGTH_SHORT).show()
                 } else if (setPhoneNumber.isEmpty()) {
-                    Toast.makeText(context, R.string.phone_number_exception, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, R.string.phone_number_exception, Toast.LENGTH_SHORT)
+                        .show()
                 } else if (!isValidPhoneNumber(setPhoneNumber)) {
-                    Toast.makeText(context, R.string.phone_number_policy_exception, Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        context,
+                        R.string.phone_number_policy_exception,
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 } else if (EmailLeftInput.isEmpty()) {
                     Toast.makeText(context, R.string.email_exception, Toast.LENGTH_SHORT).show()
                 } else if (EmailRightInput.isEmpty()) {
                     Toast.makeText(context, R.string.email_exception, Toast.LENGTH_SHORT).show()
                 } else if (!isValidEmail(setEmail)) {
-                    Toast.makeText(context, R.string.email_policy_exception, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, R.string.email_policy_exception, Toast.LENGTH_SHORT)
+                        .show()
                 } else {
 
                     val newContact = ContactList(
@@ -475,12 +505,23 @@ class ContactDetailActivity : AppCompatActivity() {
                         setNotification,
                         isliked
                     )
-
+                    binding.apply {
+                        tvAdress.text = setEmail
+                        tvNumber.text = setPhoneNumber
+                        tvName.text = setContactName
+                        Glide.with(root.context) // 또는 Glide.with(ivProfile.context)
+                            .load(contact.profileImg)
+                            .fitCenter()
+                            .into(ivProfile)
+                        //ivProfile.setImageURI(contact.profileImg)
+                        tvNotification.text = setNotification
+                    }
                     Log.d("recordUser", 3.toString())
                     // 값수정하기
                     adapter = FragmentPageAdapter(supportFragmentManager, lifecycle)
                     (adapter.getFragment(0) as ContactListFragment).reviseContactListSetting(
-                        newContact!!, position)
+                        newContact!!, position
+                    )
 
                     dialog.dismiss()
                 }
@@ -533,6 +574,7 @@ class ContactDetailActivity : AppCompatActivity() {
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
         return email.matches(emailPattern.toRegex())
     }
+
     //알림 설정하기
     fun createScheduleNotification(
         context: Context,
@@ -590,6 +632,7 @@ class ContactDetailActivity : AppCompatActivity() {
             }
         }
     }
+
     //사진 갖고오기
     private val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -604,7 +647,11 @@ class ContactDetailActivity : AppCompatActivity() {
             Glide.with(this)
                 .load(profileUri)         //이미지 uri
                 .fitCenter()
-                .into(addUserImg)             //보여줄 위치  ImageView
+                .into(addUserImg)
+            Glide.with(this)
+                .load(profileUri)
+                .fitCenter()
+                .into(binding.ivProfile)//보여줄 위치  ImageView
         }
     }
 

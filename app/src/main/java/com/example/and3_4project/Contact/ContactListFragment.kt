@@ -28,8 +28,8 @@ class ContactListFragment : Fragment(), OnSwipeListener {
                 contactPosition = position
             }
 
-        private var frag : ContactListFragment? = null
-        fun newInstance(args : Bundle = Bundle()): ContactListFragment {
+        private var frag: ContactListFragment? = null
+        fun newInstance(args: Bundle = Bundle()): ContactListFragment {
 
             // 있을때는 생성되지 않게 설정
             if (frag == null) {
@@ -103,6 +103,7 @@ class ContactListFragment : Fragment(), OnSwipeListener {
                     viewType = !viewType
                     true
                 }
+
                 else -> {}
             }
             true
@@ -120,19 +121,15 @@ class ContactListFragment : Fragment(), OnSwipeListener {
 
     fun addContacntListSetting(newContact: ContactList) {
         InfoSingleton.contactList.add(newContact)
-//
-//        //contactList = InfoSingleton.getcontactList()
-//
         adapter.notifyDataSetChanged()//addItems(contactList)
-//        adapter.addContactListSet(newContact)
+
     }
 
-    fun reviseContactListSetting(newContact: ContactList, position: Int){
+    fun reviseContactListSetting(newContact: ContactList, position: Int) {
         InfoSingleton.contactList[position] = newContact
-//        //contactList = InfoSingleton.getcontactList()
         adapter.notifyDataSetChanged()
-//        adapter.reviseContactListSet(newContact,position)
     }
+
     //스와이프시 전화 기능
     override fun onSwipe(position: Int, direction: Int) {
         Log.d("dadadad", "asdadasd")
