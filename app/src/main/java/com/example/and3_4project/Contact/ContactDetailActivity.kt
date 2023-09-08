@@ -430,7 +430,7 @@ class ContactDetailActivity : AppCompatActivity() {
                         false
                     )
 
-                    (adapter.getFragment(0) as ContactListFragment).addContactListSetting(newContact!!)
+                    (adapter.getFragment(0) as ContactListFragment).addContacntListSetting(newContact!!)
 
                     dialog.dismiss()
                 }
