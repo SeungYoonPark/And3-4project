@@ -315,7 +315,7 @@
                         android:layout_marginEnd="15dp"
                         android:layout_marginBottom="16dp"
                         android:background="@android:color/transparent"
-                        android:text="이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!이번주 토요일 고양이 파티 잊지말기!"
+                        android:text=""
                         android:textColor="@color/white"
                         android:textSize="20dp"
                         app:layout_constraintBottom_toBottomOf="parent"
