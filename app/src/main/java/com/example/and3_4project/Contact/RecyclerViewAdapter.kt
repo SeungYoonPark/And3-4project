@@ -16,13 +16,11 @@ class RecyclerViewAdapter(
     : RecyclerView.Adapter<RecyclerViewAdapter.Holder>() {
 
 
-
     interface ItemClick {
         fun onClick(view : View, position : Int){
 
         }
     }
-
     var itemClick : ItemClick? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -51,7 +49,6 @@ class RecyclerViewAdapter(
         holder.productImg.setImageURI(mItems[position].profileImg)
         holder.name.text = mItems[position].contactName
 
-
     }
 
 //    fun addItem(contactList: ContactList){
@@ -67,7 +64,6 @@ class RecyclerViewAdapter(
     override fun getItemCount(): Int {
         return mItems.size
     }
-
     //각 아이템에 관한 기본 설정
     inner class Holder(val binding: ItemRecyclerviewBinding) : RecyclerView.ViewHolder(binding.root) {
         //fun bind(){}// 바인딩이 잘못 되어있다. 수정이 필요함
