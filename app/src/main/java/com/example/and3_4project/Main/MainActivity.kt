@@ -350,7 +350,7 @@ class MainActivity : AppCompatActivity() {
 
                         // 아래 작업을 여기서 하지말고 ContactListFragment로 값을 넘겨주자
                         val addContact = adapter.getFragment(0) as ContactListFragment
-                        addContact.addContactListSetting(newContact)
+                        addContact.addContacntListSetting(newContact)
                     //초기화 하기
                     uri = null
                     userNameInput = ""

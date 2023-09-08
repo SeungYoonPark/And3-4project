@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -26,18 +27,7 @@ class ContactListFragment : Fragment(), OnSwipeListener {
             Intent(context, ContactDetailActivity::class.java).apply {
                 contactPosition = position
             }
-    }
 
-    private lateinit var binding: FragmentContactListBinding
-    private var viewType = true
-
-    //싱글톤 연결하기
-    private var contactList = InfoSingleton.getcontactList()
-    private val adapter = RecyclerViewAdapter(contactList)
-    private val gridAdapter = GridRecyclerViewAdapter(contactList)
-
-    //여기만 수정 필요합니다
-    companion object{
         private var frag : ContactListFragment? = null
         fun newInstance(args : Bundle = Bundle()): ContactListFragment {
 
@@ -50,6 +40,17 @@ class ContactListFragment : Fragment(), OnSwipeListener {
 
         }
     }
+
+    private lateinit var binding: FragmentContactListBinding
+    private var viewType = true
+
+    //싱글톤 연결하기
+    private var contactList = InfoSingleton.getcontactList()
+    private val adapter = RecyclerViewAdapter(contactList)
+    private val gridAdapter = GridRecyclerViewAdapter(contactList)
+
+    //여기만 수정 필요합니다
+
 
     // 처음에 그려질때 호출되는 콜백 메서드
     override fun onCreateView(
