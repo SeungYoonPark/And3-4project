@@ -1,6 +1,6 @@
 package com.example.and3_4project.Main
+
 import android.app.Activity
-import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -40,52 +40,43 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var viewPager2: ViewPager2
+
     private lateinit var adapter: FragmentPageAdapter
+
     // 이 데이터들을 사용할 예정
     private var userNameInput: String = ""
     private var userPhoneNumberInput: String = ""
     private var userEmailInput: String = ""
-    private lateinit var addUserImg : ImageView
-
-    private var selectTime: String = ""
     private var notificationId: Int = 0
-    private var uri: Uri? = null
+
+    private lateinit var addUserImg : ImageView
     private lateinit var userName : EditText
     private lateinit var userPhoneNumber : EditText
+    private lateinit var userEmailLeft : EditText
+    private lateinit var userEmailRight: EditText
+    private var selectTime: String = ""
+    private var uri: Uri? = null
 
-    lateinit var requestLauncher: ActivityResultLauncher<Intent>
-    //버튼을 클릭시 생성할지 판단하는 변수
-    private var fabCheck : Int = 0
+    // 액티비티 결과를 처리하는데 사용 된다.
+    companion object {
+        private lateinit var requestLauncher: ActivityResultLauncher<Intent>
+    }
 
-//    private val getResult =
-//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { reslut ->
-//            if (reslut.resultCode == Activity.RESULT_OK) {
-//                val data = reslut.data
-//                val position = data?.getIntExtra("position", -1)
-//                if (position != -1) {
-//                    // 디테일 페이지에서 전달한 position을 사용하여 RecyclerView의 아이템을 업데이트
-//                    position?.let { adapter.notifyItemChanged(it) }
-//                }
-//            }
-//        }
+    private var contextSet :Context = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-        val viewPager2 = binding.viewPager
         val tabLayout = binding.tabLayout
 
         //adapter 연결
         adapter = FragmentPageAdapter(supportFragmentManager, lifecycle)
-        viewPager2.adapter = adapter
+
 
         //탭레이아웃 설정
         tabLayout.addTab(tabLayout.newTab().setText("Contact"))
@@ -97,7 +88,7 @@ class MainActivity : AppCompatActivity() {
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if (tab != null) {
-                    viewPager2.currentItem = tab.position // 선택된 탭에 해당하는 페이지로 이동
+                    binding.viewPager.currentItem = tab.position // 선택된 탭에 해당하는 페이지로 이동
                 }
             }
 
@@ -109,9 +100,9 @@ class MainActivity : AppCompatActivity() {
                 // 사용하지 않음
             }
         })
-
+        binding.viewPager.adapter = adapter
         // ViewPager2의 페이지 변경 콜백 설정
-        viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 tabLayout.selectTab(tabLayout.getTabAt(position)) // 페이지 변경 시 탭도 변경
@@ -163,28 +154,36 @@ class MainActivity : AppCompatActivity() {
                 userPhoneNumberInput,
                 userEmailInput,
                 selectTime,
-                this
+                contextSet,
             )
         }
 
     }
-///contactfragment에 저장된것을 알려줘야한다
-    fun showAddContactDialog
-                ( uriSet: Uri?,
-                  userNameSet: String,
-                  userPhoneNumberSet: String,
-                  userEmailSet: String,
-                  selectTimeSet: String, context: Context
-                   ) {
+
+
+    ///contactfragment에 저장된것을 알려줘야한다
+    fun showAddContactDialog(
+        uriSet: Uri?,
+        userNameSet: String,
+        userPhoneNumberSet: String,
+        userEmailSet: String,
+        selectTimeSet: String,
+        context: Context,
+        position: Int = -1
+    ) {
+
         var builder: AlertDialog.Builder
         var inflater: LayoutInflater
-        if (userNameSet == ""){
-            builder = AlertDialog.Builder(this)
-            inflater = LayoutInflater.from(this)}
-        else {
+
+        //콘텍스트로 비교하기
+        if (userNameSet == "") {     //contextSet == context){             //
+            builder = AlertDialog.Builder(contextSet)
+            inflater = LayoutInflater.from(contextSet)
+        } else {// ContactDetailActivity 일때   -> 이러면 싱글톤 값을 직접 접근해야함
+            // 이러면 전체적인 값이 변경된것을 모든 페이지한테 알려야 하니깐 초기화 해야한다.
+            // 싱글톤에서 값을 뿌려주는 형태여서
             builder = AlertDialog.Builder(context)
             inflater = LayoutInflater.from(context)
-            // userNameSet이 비어있지 않은 경우에 대한 처리
         }
         val dialogLayout = inflater.inflate(R.layout.fragment_add_contact_dialog, null)
         val Cancel = dialogLayout.findViewById<Button>(R.id.cancel)
@@ -196,76 +195,83 @@ class MainActivity : AppCompatActivity() {
         val quarterPastBtn = dialogLayout.findViewById<AppCompatToggleButton>(R.id.quarterPast)
         val halfPastBtn = dialogLayout.findViewById<AppCompatToggleButton>(R.id.halfPast)
         //주소록 버튼 설정
-        val addUserContactBookBtn = dialogLayout.findViewById<ImageView>(R.id.addUserContactBook)
 
-        userName = dialogLayout.findViewById<EditText>(R.id.addUserName)
-        userPhoneNumber = dialogLayout.findViewById<EditText>(R.id.addUserPhoneNumber)
+        val addUserContactBookBtn =
+            dialogLayout.findViewById<ImageView>(R.id.addUserContactBook)
+
+        userName = dialogLayout.findViewById(R.id.addUserName)
+        userPhoneNumber = dialogLayout.findViewById(R.id.addUserPhoneNumber)
         userPhoneNumber.filters = arrayOf(InputFilter.LengthFilter(13))
 
-        val userEmailLeft = dialogLayout.findViewById<EditText>(R.id.addUserEmailLeft)
-        val userEmailRight = dialogLayout.findViewById<EditText>(R.id.addUserEmailRight)
-
-
+        userEmailLeft = dialogLayout.findViewById(R.id.addUserEmailLeft)
+        userEmailRight = dialogLayout.findViewById(R.id.addUserEmailRight)
 
         builder.setView(dialogLayout)
         val dialog = builder.create()
         dialog.show()
 
-        //버튼을 클릭시 생성할지 판단하는 변수
-        fabCheck = 0
 
-        // 값 수정하기   -> 이름 값이 비어있지 않을때
-        if(userNameSet != ""){
+        //버튼을 클릭시 생성할지 판단하는 변수
+        // 값 수정하기   ->   Context로 변경하기
+        if (userNameSet != "") {      //contextSet != context){              //
             addUserImg.setImageURI(uriSet)
             userName.setText(userNameSet)
             userPhoneNumber.setText(userPhoneNumberSet)
+
             val parts = userEmailSet.split("@")
             userEmailLeft.setText(parts[0])
             userEmailRight.setText(parts[1])
-            when(selectTimeSet){
-                "OFF"->{
+
+            when (selectTimeSet) {
+                "OFF" -> {
                     offBtn.isChecked = true
                     fivePastBtn.isChecked = false
                     quarterPastBtn.isChecked = false
                     halfPastBtn.isChecked = false
                 }
-                "5분 뒤 알림"->{
+
+                "5분 뒤 알림" -> {
                     offBtn.isChecked = false
                     fivePastBtn.isChecked = true
                     quarterPastBtn.isChecked = false
                     halfPastBtn.isChecked = false
                 }
-                "15분 뒤 알림"->{
+
+                "15분 뒤 알림" -> {
                     offBtn.isChecked = false
                     fivePastBtn.isChecked = false
                     quarterPastBtn.isChecked = true
                     halfPastBtn.isChecked = false
                 }
-                "30분 뒤 알림"->{
+
+                "30분 뒤 알림" -> {
                     offBtn.isChecked = false
                     fivePastBtn.isChecked = false
                     quarterPastBtn.isChecked = false
                     halfPastBtn.isChecked = true
                 }
-                else->{}
+
+                else -> {}
 
             }
 
         }
 
         //주소록 버튼 설정
-        addUserContactBookBtn.setOnClickListener{
-            val intent = Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI)
+        addUserContactBookBtn.setOnClickListener {
+            val intent =
+                Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI)
             requestLauncher.launch(intent)
         }
 
-        addUserImg.setOnClickListener{
+        addUserImg.setOnClickListener {
             //갤러리 호출
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
             activityResult.launch(intent)
         }
-        offBtn.setOnClickListener{
+
+        offBtn.setOnClickListener {
             selectTime = "OFF"
             notificationId = 1
 
@@ -273,7 +279,8 @@ class MainActivity : AppCompatActivity() {
             quarterPastBtn.isChecked = false
             halfPastBtn.isChecked = false
         }
-        fivePastBtn.setOnClickListener{
+
+        fivePastBtn.setOnClickListener {
             selectTime = "5분 뒤 알림"
             notificationId = 2
             offBtn.isChecked = false
@@ -281,7 +288,8 @@ class MainActivity : AppCompatActivity() {
             quarterPastBtn.isChecked = false
             halfPastBtn.isChecked = false
         }
-        quarterPastBtn.setOnClickListener{
+
+        quarterPastBtn.setOnClickListener {
             selectTime = "15분 뒤 알림"
             notificationId = 3
             offBtn.isChecked = false
@@ -289,7 +297,8 @@ class MainActivity : AppCompatActivity() {
 
             halfPastBtn.isChecked = false
         }
-        halfPastBtn.setOnClickListener{
+
+        halfPastBtn.setOnClickListener {
             selectTime = "30분 뒤 알림"
             notificationId = 4
             offBtn.isChecked = false
@@ -298,37 +307,97 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        Save.setOnClickListener {
-            //값 설정하기
-            userNameInput = userName.text.toString()
-            userPhoneNumberInput = userPhoneNumber.text.toString()
-            val EmailLeft = userEmailLeft.text.toString()
-            val EmailRight = userEmailRight.text.toString()
-            userEmailInput = "$EmailLeft@$EmailRight"
+        if (userNameSet == "") {//(contextSet == context){//
+            Save.setOnClickListener {
+                //값 설정하기
+                Log.d("recordUser", 1.toString())
+                userNameInput = userName.text.toString()
+                userPhoneNumberInput = userPhoneNumber.text.toString()
+                val EmailLeftInput = userEmailLeft.text.toString()
+                val EmailRightInput = userEmailRight.text.toString()
+                userEmailInput = "$EmailLeftInput@$EmailRightInput"
 
 
-            if (userNameInput.isEmpty()) {
-                Toast.makeText(this, R.string.name_exception, Toast.LENGTH_SHORT).show()
-            } else if (userPhoneNumberInput.isEmpty()) {
-                Toast.makeText(this, R.string.phone_number_exception, Toast.LENGTH_SHORT).show()
-            } else if (!isValidPhoneNumber(userPhoneNumberInput)) {
-                Toast.makeText(this, R.string.phone_number_policy_exception, Toast.LENGTH_SHORT).show()
+                if (userNameInput.isEmpty()) {
+                    Toast.makeText(this, R.string.name_exception, Toast.LENGTH_SHORT).show()
+                } else if (userPhoneNumberInput.isEmpty()) {
+                    Toast.makeText(this, R.string.phone_number_exception, Toast.LENGTH_SHORT)
+                        .show()
+                } else if (!isValidPhoneNumber(userPhoneNumberInput)) {
+                    Toast.makeText(
+                        this,
+                        R.string.phone_number_policy_exception,
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                } else if (EmailLeftInput.isEmpty()) {
+                    Toast.makeText(this, R.string.email_exception, Toast.LENGTH_SHORT).show()
+                } else if (EmailRightInput.isEmpty()) {
+                    Toast.makeText(this, R.string.email_exception, Toast.LENGTH_SHORT).show()
+                } else if (!isValidEmail(userEmailInput)) {
+                    Toast.makeText(this, R.string.email_policy_exception, Toast.LENGTH_SHORT)
+                        .show()
+                } else {
+                    createScheduleNotification(this, selectTime, notificationId)
+                        val newContact = ContactList(
+                            uri,
+                            userNameInput,
+                            userPhoneNumberInput,
+                            userEmailInput,
+                            selectTime,
+                            false
+                        )
+
+                        // 아래 작업을 여기서 하지말고 ContactListFragment로 값을 넘겨주자
+                        val addContact = adapter.getFragment(0) as ContactListFragment
+                        addContact.addContactListSetting(newContact)
+                    //초기화 하기
+                    uri = null
+                    userNameInput = ""
+                    userPhoneNumberInput = ""
+                    userEmailInput = ""
+                    selectTime = ""
+                    dialog.dismiss()
+                }
             }
 
-            else if (EmailLeft.isEmpty()) {
-                Toast.makeText(this, R.string.email_exception, Toast.LENGTH_SHORT).show()
-            } else if (EmailRight.isEmpty()) {
-                Toast.makeText(this, R.string.email_exception, Toast.LENGTH_SHORT).show()
-            } else if (!isValidEmail(userEmailInput)) {
-                Toast.makeText(this, R.string.email_policy_exception, Toast.LENGTH_SHORT).show()
-            } else {
-                fabCheck = 1
-                createScheduleNotification(this, selectTime, notificationId)
+        }
+        //ContactDetailActivity
+        else {
+            Log.d("recordUser", 2.toString())
 
-                if(fabCheck == 1){
+            val setBtn = dialogLayout.findViewById<Button>(R.id.save)
+            setBtn.text = "수정"      //getString(R.string.revise)
+            Save.setOnClickListener {
+                //값 설정하기
+                userNameInput = userName.text.toString()
+                userPhoneNumberInput = userPhoneNumber.text.toString()
+                val EmailLeftInput = userEmailLeft.text.toString()
+                val EmailRightInput = userEmailRight.text.toString()
+                userEmailInput = "$EmailLeftInput@$EmailRightInput"
 
 
-                    Log.d("fabCheck", "fabCheck : $fabCheck")
+                if (userNameInput.isEmpty()) {
+                    Toast.makeText(this, R.string.name_exception, Toast.LENGTH_SHORT).show()
+                } else if (userPhoneNumberInput.isEmpty()) {
+                    Toast.makeText(this, R.string.phone_number_exception, Toast.LENGTH_SHORT)
+                        .show()
+                } else if (!isValidPhoneNumber(userPhoneNumberInput)) {
+                    Toast.makeText(
+                        this,
+                        R.string.phone_number_policy_exception,
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                } else if (EmailLeftInput.isEmpty()) {
+                    Toast.makeText(this, R.string.email_exception, Toast.LENGTH_SHORT).show()
+                } else if (EmailRightInput.isEmpty()) {
+                    Toast.makeText(this, R.string.email_exception, Toast.LENGTH_SHORT).show()
+                } else if (!isValidEmail(userEmailInput)) {
+                    Toast.makeText(this, R.string.email_policy_exception, Toast.LENGTH_SHORT)
+                        .show()
+                } else {
+                    //createScheduleNotification(this, selectTime, notificationId)
                     val newContact = ContactList(
                         uri,
                         userNameInput,
@@ -337,18 +406,18 @@ class MainActivity : AppCompatActivity() {
                         selectTime,
                         false
                     )
+                    val addContact = adapter.getFragment(0) as ContactListFragment
+                    //addContact.addContactListSetting(newContact)
+                    //adapter = FragmentPageAdapter(supportFragmentManager, lifecycle)
+                    //(adapter.getFragment(0) as ContactListFragment).
+                    addContact.reviseContactListSetting(newContact, position)
 
-                    // 아래 작업을 여기서 하지말고 ContactListFragment로 값을 넘겨주자
-
-                    (adapter.getFragment(0) as ContactListFragment).addContacntListSetting(newContact)
+                    dialog.dismiss()
                 }
-                uri = null
-                userNameInput = ""
-                userPhoneNumberInput = ""
-                userEmailInput = ""
-                selectTime = ""
-                dialog.dismiss()
+
             }
+
+
         }
 
         Cancel.setOnClickListener {
@@ -360,7 +429,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         userPhoneNumber.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -386,6 +460,7 @@ class MainActivity : AppCompatActivity() {
 
         })
 
+
     }
 
     private fun isValidPhoneNumber(phoneNumber: String): Boolean {
@@ -397,6 +472,7 @@ class MainActivity : AppCompatActivity() {
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
         return email.matches(emailPattern.toRegex())
     }
+
     //알림 설정하기
     fun createScheduleNotification(
         context: Context,
@@ -453,14 +529,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
     //사진 갖고오기
     private val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()){
+        ActivityResultContracts.StartActivityForResult()
+    ) {
 
         //결과 코드 OK , 결가값 null 아니면
-        if(it.resultCode == RESULT_OK && it.data != null){
+        if (it.resultCode == RESULT_OK && it.data != null) {
             //값 담기
-            uri  = it.data!!.data
+            uri = it.data!!.data
 
             //화면에 보여주기
             Glide.with(this)
@@ -484,4 +562,7 @@ class MainActivity : AppCompatActivity() {
             Log.d("test", "permission denied")
         }
     }
+
 }
+
+
