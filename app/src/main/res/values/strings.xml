@@ -14,4 +14,8 @@
     <string name="quarter_past">15분 뒤 알림</string>
     <string name="half_past">30분 뒤 알림</string>
 
+    <string name="cancel">취소</string>
+    <string name="save">저장</string>
+    <string name="revise">수정</string>
+
 </resources>

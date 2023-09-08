@@ -1,6 +1,7 @@
 package com.example.and3_4project.Main
 
 import android.net.Uri
+import androidx.lifecycle.LiveData
 import com.example.and3_4project.Contact.ContactList
 import com.example.and3_4project.R
 
@@ -76,4 +77,5 @@ object InfoSingleton {
     fun getcontactList(): MutableList<ContactList> {
         return contactList
     }
+
 }

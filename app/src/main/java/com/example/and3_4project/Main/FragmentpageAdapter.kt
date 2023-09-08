@@ -12,21 +12,23 @@ class FragmentPageAdapter(
 
 ) : FragmentStateAdapter(fragmentManager, lifecycle){
     // 페이지의 개수를 반환하는 메서드    직접 생성하는 형식
+    // 수정이 필요
     fun getFragment(position: Int): Fragment{
         return if (position==0)// 첫 번째 페이지일 경우
-            ContactListFragment()
+            ContactListFragment.newInstance()
         else// 그 외의 경우 (두 번째 페이지일 경우)
-            MyPageFragment()
+            MyPageFragment()//.newInstance()
     }
     override fun getItemCount(): Int {
         return 2//2개의 페이지 생성 하겠다고 지정
     }
 
     // 지정된 위치(position)에 따라 해당하는 Fragment를 생성하는 메서드
+    // 수정이 필요
     override fun createFragment(position: Int): Fragment {
         return if (position==0)// 첫 번째 페이지일 경우
-            ContactListFragment()
+            ContactListFragment.newInstance()
         else// 그 외의 경우 (두 번째 페이지일 경우)
-            MyPageFragment()
+            MyPageFragment()//.newInstance()
     }
 }

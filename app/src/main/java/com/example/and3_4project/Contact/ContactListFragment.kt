@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -32,18 +31,26 @@ class ContactListFragment : Fragment(), OnSwipeListener {
     private lateinit var binding: FragmentContactListBinding
     private var viewType = true
 
-
     //싱글톤 연결하기
     private var contactList = InfoSingleton.getcontactList()
     private val adapter = RecyclerViewAdapter(contactList)
     private val gridAdapter = GridRecyclerViewAdapter(contactList)
 
-    fun newInstant(): ContactListFragment {
-        val args = Bundle()
-        val frag = ContactListFragment()
-        frag.arguments = args
-        return frag
+    //여기만 수정 필요합니다
+    companion object{
+        private var frag : ContactListFragment? = null
+        fun newInstance(args : Bundle = Bundle()): ContactListFragment {
+
+            // 있을때는 생성되지 않게 설정
+            if (frag == null) {
+                frag = ContactListFragment()
+                frag!!.arguments = args
+            }
+            return frag!!
+
+        }
     }
+
     // 처음에 그려질때 호출되는 콜백 메서드
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,6 +68,9 @@ class ContactListFragment : Fragment(), OnSwipeListener {
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
         adapter.itemClick = object : RecyclerViewAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
+                //ContactDetailActivity의 함수 newIntentForDetail을 사용한다, 값이 왔다갔다 할 수 없음
+                // / 수정 필요
+                //register
                 startActivity(ContactDetailActivity.newIntentForDetail(context, position))
             }
         }
@@ -98,22 +108,29 @@ class ContactListFragment : Fragment(), OnSwipeListener {
         }
         return binding.root
     }
+
+//    이거 없으면 fragment에 갱신이 안됌       아래는 수정할 부분 없음
+
     override fun onResume() {
         super.onResume()
         // 데이터 변경 시 어댑터에 알림
         adapter.notifyDataSetChanged()
     }
+
     fun addContacntListSetting(newContact: ContactList) {
         InfoSingleton.contactList.add(newContact)
-        contactList = InfoSingleton.getcontactList()
+//
+//        //contactList = InfoSingleton.getcontactList()
+//
         adapter.notifyDataSetChanged()//addItems(contactList)
+//        adapter.addContactListSet(newContact)
+    }
 
-        Log.d("recordUser", newContact.profileImg.toString())
-        Log.d("recordUser", newContact.contactName)
-        Log.d("recordUser", newContact.phoneNumber)
-        Log.d("recordUser", newContact.email)
-        Log.d("recordUser", newContact.notification)
-        Log.d("recordUser", newContact.isliked.toString())
+    fun reviseContactListSetting(newContact: ContactList, position: Int){
+        InfoSingleton.contactList[position] = newContact
+//        //contactList = InfoSingleton.getcontactList()
+        adapter.notifyDataSetChanged()
+//        adapter.reviseContactListSet(newContact,position)
     }
     //스와이프시 전화 기능
     override fun onSwipe(position: Int, direction: Int) {
