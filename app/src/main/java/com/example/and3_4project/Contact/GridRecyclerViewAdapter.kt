@@ -7,19 +7,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.and3_4project.Main.InfoSingleton
 import com.example.and3_4project.R
 import com.example.and3_4project.databinding.ItemGridRecyclerviewBinding
-import com.example.and3_4project.databinding.ItemRecyclerviewBinding
+
 
 class GridRecyclerViewAdapter(private val mItems: MutableList<ContactList>)
     : RecyclerView.Adapter<GridRecyclerViewAdapter.Holder>() {
 
-
-
     interface ItemClick {
         fun onClick(view : View, position : Int){
-
         }
     }
-
     var itemClick : ItemClick? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {

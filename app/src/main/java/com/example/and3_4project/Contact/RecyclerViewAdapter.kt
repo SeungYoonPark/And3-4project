@@ -21,7 +21,6 @@ class RecyclerViewAdapter(
 ) : RecyclerView.Adapter<RecyclerViewAdapter.Holder>() {
 
 
-
 //    fun addContactListSet(newContact: ContactList){
 //        InfoSingleton.contactList.add(newContact)
 //        //contactList = InfoSingleton.getcontactList()
@@ -36,10 +35,10 @@ class RecyclerViewAdapter(
 //        notifyItemChanged(position)
 //    }
 
+
     interface ItemClick {
         fun onClick(view : View, position : Int)
     }
-
     var itemClick: ItemClick? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -53,6 +52,7 @@ class RecyclerViewAdapter(
         //좋아요 버튼 클릭시 반영
         val contact= mItems[position]
         holder.bind(contact, position)
+
     }
 
     override fun getItemId(position: Int): Long {
@@ -62,7 +62,6 @@ class RecyclerViewAdapter(
     override fun getItemCount(): Int {
         return mItems.size
     }
-
     //각 아이템에 관한 기본 설정
     //외부 클래스를 쉽게 접근하기 위해서 inner class를 사용하였다
     inner class Holder(

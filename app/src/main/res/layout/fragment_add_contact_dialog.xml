@@ -13,7 +13,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/contact_book"
+        android:src="@drawable/icon_contact"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -115,6 +115,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
+        android:textColor="@color/text_color"
+        android:background="@drawable/toggle_selector"
         android:textOff="@string/off"
         android:textOn="@string/off"
         app:layout_constraintStart_toStartOf="parent"
@@ -127,6 +129,8 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
+        android:textColor="@color/text_color"
+        android:background="@drawable/toggle_selector"
         android:textOff="@string/five_past"
         android:textOn="@string/five_past"
         app:layout_constraintEnd_toEndOf="parent"
@@ -142,6 +146,8 @@
         android:layout_marginEnd="15dp"
         android:textOff="@string/quarter_past"
         android:textOn="@string/quarter_past"
+        android:textColor="@color/text_color"
+        android:background="@drawable/toggle_selector"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/halfPast"
         app:layout_constraintTop_toBottomOf="@+id/fivePast" />
@@ -152,6 +158,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="5dp"
+        android:textColor="@color/text_color"
+        android:background="@drawable/toggle_selector"
         android:textOff="@string/half_past"
         android:textOn="@string/half_past"
         app:layout_constraintStart_toStartOf="parent"
@@ -166,7 +174,6 @@
         android:layout_marginBottom="20dp"
         android:text="@string/cancel"
         android:background="@drawable/edit_text_background"
-        app:backgroundTint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/halfPast" />
@@ -180,7 +187,6 @@
         android:layout_marginBottom="20dp"
         android:text="@string/save"
         android:background="@drawable/edit_text_background"
-        app:backgroundTint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/quarterPast" />
