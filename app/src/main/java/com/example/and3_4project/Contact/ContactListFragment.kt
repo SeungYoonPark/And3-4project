@@ -119,7 +119,7 @@ class ContactListFragment : Fragment(), OnSwipeListener {
     override fun onSwipe(position: Int, direction: Int) {
         Log.d("dadadad", "asdadasd")
         contactList = InfoSingleton.getcontactList()
-        val swipePhoneNumber = contactList[2].phoneNumber
+        val swipePhoneNumber = contactList[position].phoneNumber
         val intent = Intent(Intent.ACTION_CALL)
         val uri = Uri.parse("tel:$swipePhoneNumber")
         intent.data = uri
