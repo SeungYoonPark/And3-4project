@@ -1,6 +1,5 @@
 package com.example.and3_4project.Main
 
-import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -176,7 +175,7 @@ class MainActivity : AppCompatActivity() {
         var inflater: LayoutInflater
 
         //콘텍스트로 비교하기
-        if (userNameSet == "") {     //contextSet == context){             //
+        if (userNameSet == "") {
             builder = AlertDialog.Builder(contextSet)
             inflater = LayoutInflater.from(contextSet)
         } else {// ContactDetailActivity 일때   -> 이러면 싱글톤 값을 직접 접근해야함
@@ -407,9 +406,6 @@ class MainActivity : AppCompatActivity() {
                         false
                     )
                     val addContact = adapter.getFragment(0) as ContactListFragment
-                    //addContact.addContactListSetting(newContact)
-                    //adapter = FragmentPageAdapter(supportFragmentManager, lifecycle)
-                    //(adapter.getFragment(0) as ContactListFragment).
                     addContact.reviseContactListSetting(newContact, position)
 
                     dialog.dismiss()

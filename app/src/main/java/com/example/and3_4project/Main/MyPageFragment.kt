@@ -20,19 +20,6 @@ class MyPageFragment : Fragment() {
     }
 
     // 새로운 TodoFragment 인스턴스를 생성하는 메서드
-//    companion object{
-//        private var frag : MyPageFragment? = null
-//        fun newInstance(args : Bundle = Bundle()): MyPageFragmentt {
-//
-//            // 있을때는 생성되지 않게 설정
-//            if (frag == null) {
-//                frag = MyPageFragment()
-//            }
-//            frag!!.arguments = args
-//            return frag!!
-//
-//        }
-//    }
     fun newInstant(): MyPageFragment {
         val args = Bundle()
         val frag = MyPageFragment()
