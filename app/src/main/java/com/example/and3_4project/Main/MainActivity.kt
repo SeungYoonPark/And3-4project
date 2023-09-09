@@ -338,7 +338,7 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, R.string.email_policy_exception, Toast.LENGTH_SHORT)
                         .show()
                 } else {
-                    createScheduleNotification(this, selectTime, notificationId)
+                    createScheduleNotification(this, selectTime, notificationId, userNameInput)
                         val newContact = ContactList(
                             uri,
                             userNameInput,
@@ -397,7 +397,7 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, R.string.email_policy_exception, Toast.LENGTH_SHORT)
                         .show()
                 } else {
-                    createScheduleNotification(this, selectTime, notificationId)
+                    createScheduleNotification(this, selectTime, notificationId, userNameInput)
                     val newContact = ContactList(
                         uri,
                         userNameInput,
@@ -474,7 +474,8 @@ class MainActivity : AppCompatActivity() {
     fun createScheduleNotification(
         context: Context,
         selectTime: String,
-        notificationId: Int
+        notificationId: Int,
+        userName: String
     ) {
         //알림을 생성하고 예약하는데 사용된다
         val notificationManager =
