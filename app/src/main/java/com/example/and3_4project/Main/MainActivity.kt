@@ -34,6 +34,7 @@ import com.example.and3_4project.Contact.ContactListFragment
 import com.example.and3_4project.R
 import com.example.and3_4project.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayout
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -337,7 +338,7 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, R.string.email_policy_exception, Toast.LENGTH_SHORT)
                         .show()
                 } else {
-                    createScheduleNotification(this, selectTime, notificationId)
+                    createScheduleNotification(this, selectTime, notificationId, userNameInput)
                         val newContact = ContactList(
                             uri,
                             userNameInput,
@@ -396,7 +397,7 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, R.string.email_policy_exception, Toast.LENGTH_SHORT)
                         .show()
                 } else {
-                    //createScheduleNotification(this, selectTime, notificationId)
+                    createScheduleNotification(this, selectTime, notificationId, userNameInput)
                     val newContact = ContactList(
                         uri,
                         userNameInput,
@@ -473,7 +474,8 @@ class MainActivity : AppCompatActivity() {
     fun createScheduleNotification(
         context: Context,
         selectTime: String,
-        notificationId: Int
+        notificationId: Int,
+        userName: String
     ) {
         //알림을 생성하고 예약하는데 사용된다
         val notificationManager =
@@ -507,22 +509,23 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        runBlocking {
-            launch(Dispatchers.Default) {
-                val currentTime = System.currentTimeMillis()
-                if (timeInMillis > currentTime) {
-                    delay(timeInMillis - currentTime)
-                }
-
-                val notificationBuilder = NotificationCompat.Builder(context, channelId)
-                    .setSmallIcon(R.drawable.alarm)
-                    .setContentTitle("연락처 알림")
-                    .setContentText("$userNameInput 에게 연락을 할 시간입니다.")
-                    .setContentIntent(pendingIntent) // 클릭 시 실행할 Intent 설정
-                    .setAutoCancel(true)
-
-                notificationManager.notify(notificationId, notificationBuilder.build())
+        CoroutineScope(Dispatchers.Default).launch {
+            val currentTime = System.currentTimeMillis()
+            if (timeInMillis > currentTime) {
+                delay(timeInMillis - currentTime)
             }
+
+            // 알림을 만들고 표시하는 부분
+            val notificationBuilder = NotificationCompat.Builder(context, channelId)
+                .setSmallIcon(R.drawable.alarm)
+                .setContentTitle("연락처 알림")
+                .setContentText("$userName 에게 연락을 할 시간입니다.")
+                .setContentIntent(pendingIntent) // 클릭 시 실행할 Intent 설정
+                .setAutoCancel(true)
+
+            notificationManager.notify(notificationId, notificationBuilder.build())
+
+            // 알림 예약 작업이 완료되면 다른 작업을 수행 가능
         }
     }
 
